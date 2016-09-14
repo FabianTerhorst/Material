@@ -37,15 +37,15 @@ public extension UIImage {
 	- Parameter completion: A completion block that is executed once the image
 	has been retrieved.
 	*/
-	public class func contentsOfURL(URL: NSURL, completion: ((image: UIImage?, error: NSError?) -> Void)) {
-		NSURLSession.sharedSession().dataTaskWithRequest(NSURLRequest(URL: URL)) { (data: NSData?, response: NSURLResponse?, error: NSError?) in
-			dispatch_async(dispatch_get_main_queue()) {
+	public class func contentsOfURL(_ URL: Foundation.URL, completion: @escaping ((_ image: UIImage?, _ error: NSError?) -> Void)) {
+		URLSession.shared.dataTask(with: URLRequest(url: URL), completionHandler: { (data: Data?, response: URLResponse?, error: NSError?) in
+			DispatchQueue.main.async {
 				if let v: NSError = error {
-					completion(image: nil, error: v)
-				} else if let v: NSData = data {
-					completion(image: UIImage(data: v), error: nil)
+					completion(nil, v)
+				} else if let v: Data = data {
+					completion(UIImage(data: v), nil)
 				}
 			}
-		}.resume()
+		} as! (Data?, URLResponse?, Error?) -> Void) .resume()
 	}
 }

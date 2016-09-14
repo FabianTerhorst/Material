@@ -31,28 +31,28 @@
 import UIKit
 
 public enum TabBarLineAlignment {
-	case Top
-	case Bottom
+	case top
+	case bottom
 }
 
-public class TabBar : MaterialView {
+open class TabBar : MaterialView {
 	/// A reference to the line UIView.
-	public private(set) var line: UIView!
+	open fileprivate(set) var line: UIView!
 	
 	/// A value for the line alignment.
-	public var lineAlignment: TabBarLineAlignment = .Bottom {
+	open var lineAlignment: TabBarLineAlignment = .bottom {
 		didSet {
 			layoutSubviews()
 		}
 	}
 	
 	/// Will render the view.
-	public var willRenderView: Bool {
+	open var willRenderView: Bool {
 		return 0 < width
 	}
 	
 	/// Buttons.
-	public var buttons: Array<UIButton>? {
+	open var buttons: Array<UIButton>? {
 		didSet {
 			if let v: Array<UIButton> = oldValue {
 				for b in v {
@@ -69,7 +69,7 @@ public class TabBar : MaterialView {
 		}
 	}
 	
-	public override func layoutSubviews() {
+	open override func layoutSubviews() {
 		super.layoutSubviews()
 		if willRenderView {
 			if let v: Array<UIButton> = buttons {
@@ -77,21 +77,21 @@ public class TabBar : MaterialView {
 					let columns: Int = grid.axis.columns / v.count
 					for b in v {
 						b.grid.columns = columns
-						b.contentEdgeInsets = UIEdgeInsetsZero
+						b.contentEdgeInsets = UIEdgeInsets.zero
 						b.layer.cornerRadius = 0
-						b.removeTarget(self, action: #selector(handleButton(_:)), forControlEvents: .TouchUpInside)
-						b.addTarget(self, action: #selector(handleButton(_:)), forControlEvents: .TouchUpInside)
+						b.removeTarget(self, action: #selector(handleButton(_:)), for: .touchUpInside)
+						b.addTarget(self, action: #selector(handleButton(_:)), for: .touchUpInside)
 					}
 					grid.views = v as Array<UIView>
-					line.frame = CGRectMake(0, .Bottom == lineAlignment ? height - 3 : 0, v.first!.frame.width, 3)
+					line.frame = CGRect(x: 0, y: .bottom == lineAlignment ? height - 3 : 0, width: v.first!.frame.width, height: 3)
 				}
 			}
 		}
 	}
 	
 	/// Handles the button touch event.
-	internal func handleButton(button: UIButton) {
-		UIView.animateWithDuration(0.25, animations: { [weak self] in
+	internal func handleButton(_ button: UIButton) {
+		UIView.animate(withDuration: 0.25, animations: { [weak self] in
 			if let s: TabBar = self {
 				s.line.frame.origin.x = button.frame.origin.x
 				s.line.frame.size.width = button.frame.size.width
@@ -106,15 +106,15 @@ public class TabBar : MaterialView {
 	The super.prepareView method should always be called immediately
 	when subclassing.
 	*/
-	public override func prepareView() {
+	open override func prepareView() {
 		super.prepareView()
-		autoresizingMask = .FlexibleWidth
+		autoresizingMask = .flexibleWidth
 		contentScaleFactor = MaterialDevice.scale
 		prepareBottomLayer()
 	}
 	
 	// Prepares the bottomLayer.
-	private func prepareBottomLayer() {
+	fileprivate func prepareBottomLayer() {
 		line = UIView()
 		line.backgroundColor = MaterialColor.yellow.base
 		addSubview(line)

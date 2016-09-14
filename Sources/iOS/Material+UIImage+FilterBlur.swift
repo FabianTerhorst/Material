@@ -32,11 +32,11 @@ import UIKit
 import Accelerate
 
 /// Creates an effect buffer for images that are already effected.
-private func createEffectBuffer(context: CGContext) -> vImage_Buffer {
-	let data = CGBitmapContextGetData(context)
-	let width = vImagePixelCount(CGBitmapContextGetWidth(context))
-	let height = vImagePixelCount(CGBitmapContextGetHeight(context))
-	let rowBytes = CGBitmapContextGetBytesPerRow(context)
+private func createEffectBuffer(_ context: CGContext) -> vImage_Buffer {
+	let data = context.data
+	let width = vImagePixelCount(context.width)
+	let height = vImagePixelCount(context.height)
+	let rowBytes = context.bytesPerRow
 	return vImage_Buffer(data: data, height: height, width: width, rowBytes: rowBytes)
 }
 
@@ -48,7 +48,7 @@ public extension UIImage {
 	- Parameter saturationDeltaFactor: The delta factor for the saturation of the blur effect.
 	- Returns: a UIImage.
 	*/
-	func filterBlur(blurRadius: CGFloat = 0, tintColor: UIColor? = nil, saturationDeltaFactor: CGFloat = 0) -> UIImage? {
+	func filterBlur(_ blurRadius: CGFloat = 0, tintColor: UIColor? = nil, saturationDeltaFactor: CGFloat = 0) -> UIImage? {
 		var effectImage: UIImage = self
 		
 		let screenScale: CGFloat = MaterialDevice.scale
@@ -59,9 +59,9 @@ public extension UIImage {
 		if hasBlur || hasSaturationChange {
 			UIGraphicsBeginImageContextWithOptions(size, false, screenScale)
 			let effectInContext: CGContext = UIGraphicsGetCurrentContext()!
-			CGContextScaleCTM(effectInContext, 1.0, -1.0)
-			CGContextTranslateCTM(effectInContext, 0, -size.height)
-			CGContextDrawImage(effectInContext, imageRect, self.CGImage)
+			effectInContext.scaleBy(x: 1.0, y: -1.0)
+			effectInContext.translateBy(x: 0, y: -size.height)
+			effectInContext.draw(self.cgImage!, in: imageRect)
 			var effectInBuffer: vImage_Buffer = createEffectBuffer(effectInContext)
 			
 			UIGraphicsBeginImageContextWithOptions(size, false, screenScale)
@@ -95,7 +95,7 @@ public extension UIImage {
 				
 				let divisor: CGFloat = 256
 				let matrixSize: Int = floatingPointSaturationMatrix.count
-				var saturationMatrix: Array<Int16> = Array<Int16>(count: matrixSize, repeatedValue: 0)
+				var saturationMatrix: Array<Int16> = Array<Int16>(repeating: 0, count: matrixSize)
 				
 				for i: Int in 0 ..< matrixSize {
 					saturationMatrix[i] = Int16(round(floatingPointSaturationMatrix[i] * divisor))
@@ -110,13 +110,13 @@ public extension UIImage {
 			}
 			
 			if !effectImageBuffersAreSwapped {
-				effectImage = UIGraphicsGetImageFromCurrentImageContext()
+				effectImage = UIGraphicsGetImageFromCurrentImageContext()!
 			}
 			
 			UIGraphicsEndImageContext()
 			
 			if effectImageBuffersAreSwapped {
-				effectImage = UIGraphicsGetImageFromCurrentImageContext()
+				effectImage = UIGraphicsGetImageFromCurrentImageContext()!
 			}
 			
 			UIGraphicsEndImageContext()
@@ -125,29 +125,29 @@ public extension UIImage {
 		// Set up output context.
 		UIGraphicsBeginImageContextWithOptions(size, false, screenScale)
 		let outputContext: CGContext = UIGraphicsGetCurrentContext()!
-		CGContextScaleCTM(outputContext, 1.0, -1.0)
-		CGContextTranslateCTM(outputContext, 0, -size.height)
+		outputContext.scaleBy(x: 1.0, y: -1.0)
+		outputContext.translateBy(x: 0, y: -size.height)
 		
 		// Draw base image.
-		CGContextDrawImage(outputContext, imageRect, self.CGImage)
+		outputContext.draw(self.cgImage!, in: imageRect)
 		
 		// Draw effect image.
 		if hasBlur {
-			CGContextSaveGState(outputContext)
-			CGContextDrawImage(outputContext, imageRect, effectImage.CGImage)
-			CGContextRestoreGState(outputContext)
+			outputContext.saveGState()
+			outputContext.draw(effectImage.cgImage!, in: imageRect)
+			outputContext.restoreGState()
 		}
 		
 		// Add in color tint.
 		if let v: UIColor = tintColor {
-			CGContextSaveGState(outputContext)
-			CGContextSetFillColorWithColor(outputContext, v.CGColor)
-			CGContextFillRect(outputContext, imageRect)
-			CGContextRestoreGState(outputContext)
+			outputContext.saveGState()
+			outputContext.setFillColor(v.cgColor)
+			outputContext.fill(imageRect)
+			outputContext.restoreGState()
 		}
 		
 		// Output image is ready.
-		let outputImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+		let outputImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
 		UIGraphicsEndImageContext()
 		
 		return outputImage

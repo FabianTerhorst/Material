@@ -31,32 +31,32 @@
 import UIKit
 import AVFoundation
 
-public class CapturePreview : MaterialView {
+open class CapturePreview : MaterialView {
 	/**
 	:name:	layerClass
 	*/
-	public override class func layerClass() -> AnyClass {
+	open override class var layerClass : AnyClass {
 		return AVCaptureVideoPreviewLayer.self
 	}
 
 	/**
 	:name:	captureDevicePointOfInterestForPoint
 	*/
-	public func captureDevicePointOfInterestForPoint(point: CGPoint) -> CGPoint {
-		return (layer as! AVCaptureVideoPreviewLayer).captureDevicePointOfInterestForPoint(point)
+	open func captureDevicePointOfInterestForPoint(_ point: CGPoint) -> CGPoint {
+		return (layer as! AVCaptureVideoPreviewLayer).captureDevicePointOfInterest(for: point)
 	}
 
 	/**
 	:name:	pointForCaptureDevicePointOfInterest
 	*/
-	public func pointForCaptureDevicePointOfInterest(point: CGPoint) -> CGPoint {
-		return (layer as! AVCaptureVideoPreviewLayer).pointForCaptureDevicePointOfInterest(point)
+	open func pointForCaptureDevicePointOfInterest(_ point: CGPoint) -> CGPoint {
+		return (layer as! AVCaptureVideoPreviewLayer).pointForCaptureDevicePoint(ofInterest: point)
 	}
 
 	/**
 	:name:	prepareView
 	*/
-	public override func prepareView() {
+	open override func prepareView() {
 		super.prepareView()
 		preparePreviewLayer()
 	}
@@ -64,8 +64,8 @@ public class CapturePreview : MaterialView {
 	/**
 	:name:	preparePreviewLayer
 	*/
-	private func preparePreviewLayer() {
-		layer.backgroundColor = MaterialColor.black.CGColor
+	fileprivate func preparePreviewLayer() {
+		layer.backgroundColor = MaterialColor.black.cgColor
 		layer.masksToBounds = true
 		(layer as! AVCaptureVideoPreviewLayer).videoGravity = AVLayerVideoGravityResizeAspectFill
 	}

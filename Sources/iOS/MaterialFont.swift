@@ -37,22 +37,22 @@ public struct MaterialFont : MaterialFontType {
 	public static let pointSize: CGFloat = 16
 	
 	/// Retrieves the system font with a specified size.
-	public static func systemFontWithSize(size: CGFloat) -> UIFont {
-		return UIFont.systemFontOfSize(size)
+	public static func systemFontWithSize(_ size: CGFloat) -> UIFont {
+		return UIFont.systemFont(ofSize: size)
 	}
 	
 	/// Retrieves the bold system font with a specified size.
-	public static func boldSystemFontWithSize(size: CGFloat) -> UIFont {
-		return UIFont.boldSystemFontOfSize(size)
+	public static func boldSystemFontWithSize(_ size: CGFloat) -> UIFont {
+		return UIFont.boldSystemFont(ofSize: size)
 	}
 	
 	/// Retrieves the italic system font with a specified size.
-	public static func italicSystemFontWithSize(size: CGFloat) -> UIFont {
-		return UIFont.italicSystemFontOfSize(size)
+	public static func italicSystemFontWithSize(_ size: CGFloat) -> UIFont {
+		return UIFont.italicSystemFont(ofSize: size)
 	}
     
 	/// Loads a font if it is needed.
-	public static func loadFontIfNeeded(fontName: String) {
+	public static func loadFontIfNeeded(_ fontName: String) {
         MaterialFontLoader.loadFontIfNeeded(fontName)
     }
 }
@@ -63,26 +63,26 @@ private class MaterialFontLoader {
     static var loadedFonts: Dictionary<String, String> = Dictionary<String, String>()
 	
 	/// Loads a font specified if needed.
-    static func loadFontIfNeeded(fontName: String) {
+    static func loadFontIfNeeded(_ fontName: String) {
 		let loadedFont: String? = MaterialFontLoader.loadedFonts[fontName]
 		
         if nil == loadedFont && nil == UIFont(name: fontName, size: 1) {
 			MaterialFontLoader.loadedFonts[fontName] = fontName
 			
-			let bundle: NSBundle = NSBundle(forClass: MaterialFontLoader.self)
+			let bundle: Bundle = Bundle(for: MaterialFontLoader.self)
 			let identifier: String? = bundle.bundleIdentifier
-			let fontURL: NSURL? = true == identifier?.hasPrefix("org.cocoapods") ? bundle.URLForResource(fontName, withExtension: "ttf", subdirectory: "io.cosmicmind.material.fonts.bundle") : bundle.URLForResource(fontName, withExtension: "ttf")
+			let fontURL: URL? = true == identifier?.hasPrefix("org.cocoapods") ? bundle.url(forResource: fontName, withExtension: "ttf", subdirectory: "io.cosmicmind.material.fonts.bundle") : bundle.url(forResource: fontName, withExtension: "ttf")
 			
-			if let v: NSURL = fontURL {
-				let data: NSData = NSData(contentsOfURL: v)!
-                let provider: CGDataProvider = CGDataProviderCreateWithCFData(data)!
-				let font: CGFont = CGFontCreateWithDataProvider(provider)!
+			if let v: URL = fontURL {
+				let data: Data = try! Data(contentsOf: v)
+                let provider: CGDataProvider = CGDataProvider(data: data as CFData)!
+				let font: CGFont = CGFont(provider)
                 
                 var error: Unmanaged<CFError>?
                 if !CTFontManagerRegisterGraphicsFont(font, &error) {
-                    let errorDescription: CFStringRef = CFErrorCopyDescription(error!.takeUnretainedValue())
+                    let errorDescription: CFString = CFErrorCopyDescription(error!.takeUnretainedValue())
 					let nsError: NSError = error!.takeUnretainedValue() as AnyObject as! NSError
-                    NSException(name: NSInternalInconsistencyException, reason: errorDescription as String, userInfo: [NSUnderlyingErrorKey: nsError]).raise()
+                    NSException(name: NSExceptionName.internalInconsistencyException, reason: errorDescription as String, userInfo: [NSUnderlyingErrorKey: nsError]).raise()
                 }
             }
         }

@@ -31,7 +31,7 @@
 import UIKit
 
 @IBDesignable
-public class NavigationController : UINavigationController, UIGestureRecognizerDelegate {
+open class NavigationController : UINavigationController, UIGestureRecognizerDelegate {
 	/**
 	An initializer that initializes the object with a NSCoder object.
 	- Parameter aDecoder: A NSCoder instance.
@@ -45,7 +45,7 @@ public class NavigationController : UINavigationController, UIGestureRecognizerD
 	- Parameter nibNameOrNil: An Optional String for the nib.
 	- Parameter bundle: An Optional NSBundle where the nib is located.
 	*/
-	public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+	public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 	}
 	
@@ -58,26 +58,26 @@ public class NavigationController : UINavigationController, UIGestureRecognizerD
 		setViewControllers([rootViewController], animated: false)
 	}
 	
-	public override func viewWillAppear(animated: Bool) {
+	open override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		if let v: UIGestureRecognizer = interactivePopGestureRecognizer {
 			if let x: NavigationDrawerController = navigationDrawerController {
 				if let l: UIPanGestureRecognizer = x.leftPanGesture {
-					l.requireGestureRecognizerToFail(v)
+					l.require(toFail: v)
 				}
 				if let r: UIPanGestureRecognizer = x.rightPanGesture {
-					r.requireGestureRecognizerToFail(v)
+					r.require(toFail: v)
 				}
 			}
 		}
 	}
 	
-	public override func viewDidLoad() {
+	open override func viewDidLoad() {
 		super.viewDidLoad()
 		prepareView()
 	}
 	
-	public override func viewDidAppear(animated: Bool) {
+	open override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		// Load the initial topItem.
 		if let v: NavigationBar = navigationBar as? NavigationBar {
@@ -94,7 +94,7 @@ public class NavigationController : UINavigationController, UIGestureRecognizerD
 	- Parameter touch: The UITouch event.
 	- Returns: A Boolean of whether to continue the gesture or not, true yes, false no.
 	*/
-	public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+	open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
 		return interactivePopGestureRecognizer == gestureRecognizer && nil != navigationBar.backItem
 	}
 	
@@ -106,13 +106,13 @@ public class NavigationController : UINavigationController, UIGestureRecognizerD
 	- Returns: A Boolean value that indicates whether to push the item on to the stack or not. 
 	True is yes, false is no.
 	*/
-	public func navigationBar(navigationBar: UINavigationBar, shouldPushItem item: UINavigationItem) -> Bool {
+	open func navigationBar(_ navigationBar: UINavigationBar, shouldPushItem item: UINavigationItem) -> Bool {
 		if let v: NavigationBar = navigationBar as? NavigationBar {
 			let backButton: IconButton = IconButton()
 			backButton.pulseColor = MaterialColor.white
-			backButton.setImage(v.backButtonImage, forState: .Normal)
-			backButton.setImage(v.backButtonImage, forState: .Highlighted)
-			backButton.addTarget(self, action: #selector(handleBackButton), forControlEvents: .TouchUpInside)
+			backButton.setImage(v.backButtonImage, for: UIControlState())
+			backButton.setImage(v.backButtonImage, for: .highlighted)
+			backButton.addTarget(self, action: #selector(handleBackButton), for: .touchUpInside)
 			
 			if var c: Array<UIControl> = item.leftControls {
 				c.append(backButton)
@@ -129,7 +129,7 @@ public class NavigationController : UINavigationController, UIGestureRecognizerD
 	
 	/// Handler for the back button.
 	internal func handleBackButton() {
-		popViewControllerAnimated(true)
+		popViewController(animated: true)
 	}
 	
 	/**
@@ -139,13 +139,13 @@ public class NavigationController : UINavigationController, UIGestureRecognizerD
 	The super.prepareView method should always be called immediately
 	when subclassing.
 	*/
-	public func prepareView() {
+	open func prepareView() {
 		view.clipsToBounds = true
 		view.contentScaleFactor = MaterialDevice.scale
 		
 		// This ensures the panning gesture is available when going back between views.
 		if let v: UIGestureRecognizer = interactivePopGestureRecognizer {
-			v.enabled = true
+			v.isEnabled = true
 			v.delegate = self
 		}
 	}

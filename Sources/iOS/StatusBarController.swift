@@ -42,25 +42,25 @@ public extension UIViewController {
 			if viewController is StatusBarController {
 				return viewController as? StatusBarController
 			}
-			viewController = viewController?.parentViewController
+			viewController = viewController?.parent
 		}
 		return nil
 	}
 }
 
 @IBDesignable
-public class StatusBarController : RootController {
+open class StatusBarController : RootController {
 	/// A reference to the statusBarView.
-	public private(set) var statusBarView: MaterialView!
+	open fileprivate(set) var statusBarView: MaterialView!
 	
 	/**
 	To execute in the order of the layout chain, override this
 	method. LayoutSubviews should be called immediately, unless you
 	have a certain need.
 	*/
-	public override func layoutSubviews() {
+	open override func layoutSubviews() {
 		super.layoutSubviews()
-		statusBarView.hidden = MaterialDevice.isLandscape && .iPhone == MaterialDevice.type
+		statusBarView.isHidden = MaterialDevice.isLandscape && .iPhone == MaterialDevice.type
 		rootViewController.view.frame = view.bounds
 	}
 	
@@ -71,16 +71,16 @@ public class StatusBarController : RootController {
 	The super.prepareView method should always be called immediately
 	when subclassing.
 	*/
-	public override func prepareView() {
+	open override func prepareView() {
         super.prepareView()
 		prepareStatusBarView()
 	}
 	
 	/// Prepares the statusBarView.
-	private func prepareStatusBarView() {
+	fileprivate func prepareStatusBarView() {
 		statusBarView = MaterialView()
 		statusBarView.zPosition = 3000
-		statusBarView.backgroundColor = MaterialColor.black.colorWithAlphaComponent(0.12)
+		statusBarView.backgroundColor = MaterialColor.black.withAlphaComponent(0.12)
 		view.layout(statusBarView).top(0).horizontally().height(20)
 	}
 }

@@ -34,11 +34,11 @@ public extension MaterialAnimation {
 	/**
 	:name:	backgroundColor
 	*/
-	public static func backgroundColor(color: UIColor, duration: CFTimeInterval? = nil) -> CABasicAnimation {
+	public static func backgroundColor(_ color: UIColor, duration: CFTimeInterval? = nil) -> CABasicAnimation {
 		let animation: CABasicAnimation = CABasicAnimation(keyPath: "backgroundColor")
-		animation.toValue = color.CGColor
-		animation.fillMode = MaterialAnimationFillModeToValue(.Forwards)
-		animation.removedOnCompletion = false
+		animation.toValue = color.cgColor
+		animation.fillMode = MaterialAnimationFillModeToValue(.forwards)
+		animation.isRemovedOnCompletion = false
 		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 		if let v: CFTimeInterval = duration {
 			animation.duration = v
@@ -49,11 +49,11 @@ public extension MaterialAnimation {
 	/**
 	:name:	cornerRadius
 	*/
-	public static func cornerRadius(radius: CGFloat, duration: CFTimeInterval? = nil) -> CABasicAnimation {
+	public static func cornerRadius(_ radius: CGFloat, duration: CFTimeInterval? = nil) -> CABasicAnimation {
 		let animation: CABasicAnimation = CABasicAnimation(keyPath: "cornerRadius")
 		animation.toValue = radius
-		animation.fillMode = MaterialAnimationFillModeToValue(.Forwards)
-		animation.removedOnCompletion = false
+		animation.fillMode = MaterialAnimationFillModeToValue(.forwards)
+		animation.isRemovedOnCompletion = false
 		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 		if let v: CFTimeInterval = duration {
 			animation.duration = v
@@ -64,11 +64,11 @@ public extension MaterialAnimation {
 	/**
 	:name:	translation
 	*/
-	public static func transform(transform: CATransform3D, duration: CFTimeInterval? = nil) -> CABasicAnimation {
+	public static func transform(_ transform: CATransform3D, duration: CFTimeInterval? = nil) -> CABasicAnimation {
 		let animation: CABasicAnimation = CABasicAnimation(keyPath: "transform")
-		animation.toValue = NSValue(CATransform3D: transform)
-		animation.fillMode = MaterialAnimationFillModeToValue(.Forwards)
-		animation.removedOnCompletion = false
+		animation.toValue = NSValue(caTransform3D: transform)
+		animation.fillMode = MaterialAnimationFillModeToValue(.forwards)
+		animation.isRemovedOnCompletion = false
 		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 		if let v: CFTimeInterval = duration {
 			animation.duration = v
@@ -79,15 +79,15 @@ public extension MaterialAnimation {
 	/**
 	:name:	rotate
 	*/
-	public static func rotate(angle angle: CGFloat? = nil, rotation: CGFloat? = nil, duration: CFTimeInterval? = nil) -> CABasicAnimation {
+	public static func rotate(angle: CGFloat? = nil, rotation: CGFloat? = nil, duration: CFTimeInterval? = nil) -> CABasicAnimation {
 		let animation: CABasicAnimation = CABasicAnimation(keyPath: "transform.rotation")
 		if let v: CGFloat = angle {
 			animation.toValue = (CGFloat(M_PI) * v / 180) as NSNumber
 		} else if let v: CGFloat = rotation {
 			animation.toValue = (CGFloat(M_PI * 2) * v) as NSNumber
 		}
-		animation.fillMode = MaterialAnimationFillModeToValue(.Forwards)
-		animation.removedOnCompletion = false
+		animation.fillMode = MaterialAnimationFillModeToValue(.forwards)
+		animation.isRemovedOnCompletion = false
 		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 		if let v: CFTimeInterval = duration {
 			animation.duration = v
@@ -98,15 +98,15 @@ public extension MaterialAnimation {
 	/**
 	:name:	rotateX
 	*/
-	public static func rotateX(angle angle: CGFloat? = nil, rotation: CGFloat? = nil, duration: CFTimeInterval? = nil) -> CABasicAnimation {
+	public static func rotateX(angle: CGFloat? = nil, rotation: CGFloat? = nil, duration: CFTimeInterval? = nil) -> CABasicAnimation {
 		let animation: CABasicAnimation = CABasicAnimation(keyPath: "transform.rotation.x")
 		if let v: CGFloat = angle {
 			animation.toValue = (CGFloat(M_PI) * v / 180) as NSNumber
 		} else if let v: CGFloat = rotation {
 			animation.toValue = (CGFloat(M_PI * 2) * v) as NSNumber
 		}
-		animation.fillMode = MaterialAnimationFillModeToValue(.Forwards)
-		animation.removedOnCompletion = false
+		animation.fillMode = MaterialAnimationFillModeToValue(.forwards)
+		animation.isRemovedOnCompletion = false
 		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 		if let v: CFTimeInterval = duration {
 			animation.duration = v
@@ -117,15 +117,15 @@ public extension MaterialAnimation {
 	/**
 	:name:	rotateY
 	*/
-	public static func rotateY(angle angle: CGFloat? = nil, rotation: CGFloat? = nil, duration: CFTimeInterval? = nil) -> CABasicAnimation {
+	public static func rotateY(angle: CGFloat? = nil, rotation: CGFloat? = nil, duration: CFTimeInterval? = nil) -> CABasicAnimation {
 		let animation: CABasicAnimation = CABasicAnimation(keyPath: "transform.rotation.y")
 		if let v: CGFloat = angle {
 			animation.toValue = (CGFloat(M_PI) * v / 180) as NSNumber
 		} else if let v: CGFloat = rotation {
 			animation.toValue = (CGFloat(M_PI * 2) * v) as NSNumber
 		}
-		animation.fillMode = MaterialAnimationFillModeToValue(.Forwards)
-		animation.removedOnCompletion = false
+		animation.fillMode = MaterialAnimationFillModeToValue(.forwards)
+		animation.isRemovedOnCompletion = false
 		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 		if let v: CFTimeInterval = duration {
 			animation.duration = v
@@ -136,15 +136,15 @@ public extension MaterialAnimation {
 	/**
 	:name:	rotateZ
 	*/
-	public static func rotateZ(angle angle: CGFloat? = nil, rotation: CGFloat? = nil, duration: CFTimeInterval? = nil) -> CABasicAnimation {
+	public static func rotateZ(angle: CGFloat? = nil, rotation: CGFloat? = nil, duration: CFTimeInterval? = nil) -> CABasicAnimation {
 		let animation: CABasicAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
 		if let v: CGFloat = angle {
 			animation.toValue = (CGFloat(M_PI) * v / 180) as NSNumber
 		} else if let v: CGFloat = rotation {
 			animation.toValue = (CGFloat(M_PI * 2) * v) as NSNumber
 		}
-		animation.fillMode = MaterialAnimationFillModeToValue(.Forwards)
-		animation.removedOnCompletion = false
+		animation.fillMode = MaterialAnimationFillModeToValue(.forwards)
+		animation.isRemovedOnCompletion = false
 		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 		if let v: CFTimeInterval = duration {
 			animation.duration = v
@@ -155,11 +155,11 @@ public extension MaterialAnimation {
 	/**
 	:name:	scale
 	*/
-	public static func scale(scale: CGFloat, duration: CFTimeInterval? = nil) -> CABasicAnimation {
+	public static func scale(_ scale: CGFloat, duration: CFTimeInterval? = nil) -> CABasicAnimation {
 		let animation: CABasicAnimation = CABasicAnimation(keyPath: "transform.scale")
 		animation.toValue = scale as NSNumber
-		animation.fillMode = MaterialAnimationFillModeToValue(.Forwards)
-		animation.removedOnCompletion = false
+		animation.fillMode = MaterialAnimationFillModeToValue(.forwards)
+		animation.isRemovedOnCompletion = false
 		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 		if let v: CFTimeInterval = duration {
 			animation.duration = v
@@ -170,11 +170,11 @@ public extension MaterialAnimation {
 	/**
 	:name:	scaleX
 	*/
-	public static func scaleX(scale: CGFloat, duration: CFTimeInterval? = nil) -> CABasicAnimation {
+	public static func scaleX(_ scale: CGFloat, duration: CFTimeInterval? = nil) -> CABasicAnimation {
 		let animation: CABasicAnimation = CABasicAnimation(keyPath: "transform.scale.x")
 		animation.toValue = scale as NSNumber
-		animation.fillMode = MaterialAnimationFillModeToValue(.Forwards)
-		animation.removedOnCompletion = false
+		animation.fillMode = MaterialAnimationFillModeToValue(.forwards)
+		animation.isRemovedOnCompletion = false
 		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 		if let v: CFTimeInterval = duration {
 			animation.duration = v
@@ -185,11 +185,11 @@ public extension MaterialAnimation {
 	/**
 	:name:	scaleY
 	*/
-	public static func scaleY(scale: CGFloat, duration: CFTimeInterval? = nil) -> CABasicAnimation {
+	public static func scaleY(_ scale: CGFloat, duration: CFTimeInterval? = nil) -> CABasicAnimation {
 		let animation: CABasicAnimation = CABasicAnimation(keyPath: "transform.scale.y")
 		animation.toValue = scale as NSNumber
-		animation.fillMode = MaterialAnimationFillModeToValue(.Forwards)
-		animation.removedOnCompletion = false
+		animation.fillMode = MaterialAnimationFillModeToValue(.forwards)
+		animation.isRemovedOnCompletion = false
 		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 		if let v: CFTimeInterval = duration {
 			animation.duration = v
@@ -200,11 +200,11 @@ public extension MaterialAnimation {
 	/**
 	:name:	scaleZ
 	*/
-	public static func scaleZ(scale: CGFloat, duration: CFTimeInterval? = nil) -> CABasicAnimation {
+	public static func scaleZ(_ scale: CGFloat, duration: CFTimeInterval? = nil) -> CABasicAnimation {
 		let animation: CABasicAnimation = CABasicAnimation(keyPath: "transform.scale.z")
 		animation.toValue = scale as NSNumber
-		animation.fillMode = MaterialAnimationFillModeToValue(.Forwards)
-		animation.removedOnCompletion = false
+		animation.fillMode = MaterialAnimationFillModeToValue(.forwards)
+		animation.isRemovedOnCompletion = false
 		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 		if let v: CFTimeInterval = duration {
 			animation.duration = v
@@ -215,11 +215,11 @@ public extension MaterialAnimation {
 	/**
 	:name:	translate
 	*/
-	public static func translate(translation: CGSize, duration: CFTimeInterval? = nil) -> CABasicAnimation {
+	public static func translate(_ translation: CGSize, duration: CFTimeInterval? = nil) -> CABasicAnimation {
 		let animation: CABasicAnimation = CABasicAnimation(keyPath: "transform.translation")
-		animation.toValue = NSValue(CGSize: translation)
-		animation.fillMode = MaterialAnimationFillModeToValue(.Forwards)
-		animation.removedOnCompletion = false
+		animation.toValue = NSValue(cgSize: translation)
+		animation.fillMode = MaterialAnimationFillModeToValue(.forwards)
+		animation.isRemovedOnCompletion = false
 		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 		if let v: CFTimeInterval = duration {
 			animation.duration = v
@@ -230,11 +230,11 @@ public extension MaterialAnimation {
 	/**
 	:name:	translateX
 	*/
-	public static func translateX(translation: CGFloat, duration: CFTimeInterval? = nil) -> CABasicAnimation {
+	public static func translateX(_ translation: CGFloat, duration: CFTimeInterval? = nil) -> CABasicAnimation {
 		let animation: CABasicAnimation = CABasicAnimation(keyPath: "transform.translation.x")
 		animation.toValue = translation as NSNumber
-		animation.fillMode = MaterialAnimationFillModeToValue(.Forwards)
-		animation.removedOnCompletion = false
+		animation.fillMode = MaterialAnimationFillModeToValue(.forwards)
+		animation.isRemovedOnCompletion = false
 		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 		if let v: CFTimeInterval = duration {
 			animation.duration = v
@@ -245,11 +245,11 @@ public extension MaterialAnimation {
 	/**
 	:name:	translateY
 	*/
-	public static func translateY(translation: CGFloat, duration: CFTimeInterval? = nil) -> CABasicAnimation {
+	public static func translateY(_ translation: CGFloat, duration: CFTimeInterval? = nil) -> CABasicAnimation {
 		let animation: CABasicAnimation = CABasicAnimation(keyPath: "transform.translation.y")
 		animation.toValue = translation as NSNumber
-		animation.fillMode = MaterialAnimationFillModeToValue(.Forwards)
-		animation.removedOnCompletion = false
+		animation.fillMode = MaterialAnimationFillModeToValue(.forwards)
+		animation.isRemovedOnCompletion = false
 		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 		if let v: CFTimeInterval = duration {
 			animation.duration = v
@@ -260,11 +260,11 @@ public extension MaterialAnimation {
 	/**
 	:name:	translateZ
 	*/
-	public static func translateZ(translation: CGFloat, duration: CFTimeInterval? = nil) -> CABasicAnimation {
+	public static func translateZ(_ translation: CGFloat, duration: CFTimeInterval? = nil) -> CABasicAnimation {
 		let animation: CABasicAnimation = CABasicAnimation(keyPath: "transform.translation.z")
 		animation.toValue = translation as NSNumber
-		animation.fillMode = MaterialAnimationFillModeToValue(.Forwards)
-		animation.removedOnCompletion = false
+		animation.fillMode = MaterialAnimationFillModeToValue(.forwards)
+		animation.isRemovedOnCompletion = false
 		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 		if let v: CFTimeInterval = duration {
 			animation.duration = v
@@ -275,11 +275,11 @@ public extension MaterialAnimation {
 	/**
 	:name:	position
 	*/
-	public static func position(point: CGPoint, duration: CFTimeInterval? = nil) -> CABasicAnimation {
+	public static func position(_ point: CGPoint, duration: CFTimeInterval? = nil) -> CABasicAnimation {
 		let animation: CABasicAnimation = CABasicAnimation(keyPath: "position")
-		animation.toValue = NSValue(CGPoint: point)
-		animation.fillMode = MaterialAnimationFillModeToValue(.Forwards)
-		animation.removedOnCompletion = false
+		animation.toValue = NSValue(cgPoint: point)
+		animation.fillMode = MaterialAnimationFillModeToValue(.forwards)
+		animation.isRemovedOnCompletion = false
 		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 		if let v: CFTimeInterval = duration {
 			animation.duration = v
@@ -287,11 +287,11 @@ public extension MaterialAnimation {
 		return animation
 	}
 	
-	public static func shadowPath(path: CGPath, duration: CFTimeInterval? = nil) -> CABasicAnimation {
+	public static func shadowPath(_ path: CGPath, duration: CFTimeInterval? = nil) -> CABasicAnimation {
 		let animation: CABasicAnimation = CABasicAnimation(keyPath: "shadowPath")
 		animation.toValue = path
-		animation.fillMode = MaterialAnimationFillModeToValue(.Forwards)
-		animation.removedOnCompletion = false
+		animation.fillMode = MaterialAnimationFillModeToValue(.forwards)
+		animation.isRemovedOnCompletion = false
 		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 		if let v: CFTimeInterval = duration {
 			animation.duration = v

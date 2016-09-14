@@ -31,40 +31,40 @@
 import UIKit
 
 public enum MaterialBorder {
-	case None
-	case Border1
-	case Border2
-	case Border3
-	case Border4
-	case Border5
-	case Border6
-	case Border7
-	case Border8
-	case Border9
+	case none
+	case border1
+	case border2
+	case border3
+	case border4
+	case border5
+	case border6
+	case border7
+	case border8
+	case border9
 }
 
 /// Converts the MaterialBorder enum to a CGFloat value.
-public func MaterialBorderToValue(border: MaterialBorder) -> CGFloat {
+public func MaterialBorderToValue(_ border: MaterialBorder) -> CGFloat {
 	switch border {
-	case .None:
+	case .none:
 		return 0
-	case .Border1:
+	case .border1:
 		return 0.5
-	case .Border2:
+	case .border2:
 		return 1
-	case .Border3:
+	case .border3:
 		return 2
-	case .Border4:
+	case .border4:
 		return 3
-	case .Border5:
+	case .border5:
 		return 4
-	case .Border6:
+	case .border6:
 		return 5
-	case .Border7:
+	case .border7:
 		return 6
-	case .Border8:
+	case .border8:
 		return 7
-	case .Border9:
+	case .border9:
 		return 8
 	}
 }

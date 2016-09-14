@@ -31,9 +31,9 @@
 import UIKit
 
 @IBDesignable
-public class MaterialCollectionView : UICollectionView {
+open class MaterialCollectionView : UICollectionView {
 	/// A property that accesses the layer.frame.origin.x property.
-	@IBInspectable public var x: CGFloat {
+	@IBInspectable open var x: CGFloat {
 		get {
 			return layer.frame.origin.x
 		}
@@ -43,7 +43,7 @@ public class MaterialCollectionView : UICollectionView {
 	}
 	
 	/// A property that accesses the layer.frame.origin.y property.
-	@IBInspectable public var y: CGFloat {
+	@IBInspectable open var y: CGFloat {
 		get {
 			return layer.frame.origin.y
 		}
@@ -53,7 +53,7 @@ public class MaterialCollectionView : UICollectionView {
 	}
 	
 	/// A property that accesses the layer.frame.size.width property.
-	@IBInspectable public var width: CGFloat {
+	@IBInspectable open var width: CGFloat {
 		get {
 			return layer.frame.size.width
 		}
@@ -63,7 +63,7 @@ public class MaterialCollectionView : UICollectionView {
 	}
 	
 	/// A property that accesses the layer.frame.size.height property.
-	@IBInspectable public var height: CGFloat {
+	@IBInspectable open var height: CGFloat {
 		get {
 			return layer.frame.size.height
 		}
@@ -73,7 +73,7 @@ public class MaterialCollectionView : UICollectionView {
 	}
 	
 	/// A preset wrapper around contentInset.
-	public var contentInsetPreset: MaterialEdgeInset {
+	open var contentInsetPreset: MaterialEdgeInset {
 		get {
 			return (collectionViewLayout as? MaterialCollectionViewLayout)!.contentInsetPreset
 		}
@@ -82,7 +82,7 @@ public class MaterialCollectionView : UICollectionView {
 		}
 	}
 	
-	public override var contentInset: UIEdgeInsets {
+	open override var contentInset: UIEdgeInsets {
 		get {
 			return (collectionViewLayout as? MaterialCollectionViewLayout)!.contentInset
 		}
@@ -92,7 +92,7 @@ public class MaterialCollectionView : UICollectionView {
 	}
 	
 	/// Scroll direction.
-	public var scrollDirection: UICollectionViewScrollDirection {
+	open var scrollDirection: UICollectionViewScrollDirection {
 		get {
 			return (collectionViewLayout as? MaterialCollectionViewLayout)!.scrollDirection
 		}
@@ -102,14 +102,14 @@ public class MaterialCollectionView : UICollectionView {
 	}
 	
 	/// A preset wrapper around spacing.
-	public var spacingPreset: MaterialSpacing = .None {
+	open var spacingPreset: MaterialSpacing = .none {
 		didSet {
 			spacing = MaterialSpacingToValue(spacingPreset)
 		}
 	}
 	
 	/// Spacing between items.
-	@IBInspectable public var spacing: CGFloat {
+	@IBInspectable open var spacing: CGFloat {
 		get {
 			return (collectionViewLayout as? MaterialCollectionViewLayout)!.spacing
 		}
@@ -158,9 +158,9 @@ public class MaterialCollectionView : UICollectionView {
 	The super.prepareView method should always be called immediately
 	when subclassing.
 	*/
-	public func prepareView() {
+	open func prepareView() {
 		contentScaleFactor = MaterialDevice.scale
 		backgroundColor = MaterialColor.clear
-		contentInset = UIEdgeInsetsZero
+		contentInset = UIEdgeInsets.zero
 	}
 }

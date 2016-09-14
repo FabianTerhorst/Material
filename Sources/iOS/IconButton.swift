@@ -30,7 +30,7 @@
 
 import UIKit
 
-public class IconButton : MaterialButton {
+open class IconButton : MaterialButton {
 	/**
 	Prepares the view instance when intialized. When subclassing,
 	it is recommended to override the prepareView method
@@ -38,10 +38,10 @@ public class IconButton : MaterialButton {
 	The super.prepareView method should always be called immediately
 	when subclassing.
 	*/
-	public override func prepareView() {
+	open override func prepareView() {
 		super.prepareView()
-		cornerRadiusPreset = .Radius1
-		contentEdgeInsetsPreset = .WideRectangle3
-		pulseAnimation = .Center
+		cornerRadiusPreset = .radius1
+		contentEdgeInsetsPreset = .wideRectangle3
+		pulseAnimation = .center
 	}
 }

@@ -31,106 +31,106 @@
 import UIKit
 
 public enum MaterialEdgeInset {
-	case None
+	case none
 	
 	// square
-	case Square1
-	case Square2
-	case Square3
-	case Square4
-	case Square5
-	case Square6
-	case Square7
-	case Square8
-	case Square9
+	case square1
+	case square2
+	case square3
+	case square4
+	case square5
+	case square6
+	case square7
+	case square8
+	case square9
 	
 	// rectangle
-	case WideRectangle1
-	case WideRectangle2
-	case WideRectangle3
-	case WideRectangle4
-	case WideRectangle5
-	case WideRectangle6
-	case WideRectangle7
-	case WideRectangle8
-	case WideRectangle9
+	case wideRectangle1
+	case wideRectangle2
+	case wideRectangle3
+	case wideRectangle4
+	case wideRectangle5
+	case wideRectangle6
+	case wideRectangle7
+	case wideRectangle8
+	case wideRectangle9
 	
 	// flipped rectangle
-	case TallRectangle1
-	case TallRectangle2
-	case TallRectangle3
-	case TallRectangle4
-	case TallRectangle5
-	case TallRectangle6
-	case TallRectangle7
-	case TallRectangle8
-	case TallRectangle9
+	case tallRectangle1
+	case tallRectangle2
+	case tallRectangle3
+	case tallRectangle4
+	case tallRectangle5
+	case tallRectangle6
+	case tallRectangle7
+	case tallRectangle8
+	case tallRectangle9
 }
 
 /// Converts the MaterialEdgeInset to a UIEdgeInsets value.
-public func MaterialEdgeInsetToValue(inset: MaterialEdgeInset) -> UIEdgeInsets {
+public func MaterialEdgeInsetToValue(_ inset: MaterialEdgeInset) -> UIEdgeInsets {
 	switch inset {
-	case .None:
-		return UIEdgeInsetsZero
+	case .none:
+		return UIEdgeInsets.zero
 	
 	// square
-	case .Square1:
+	case .square1:
 		return UIEdgeInsetsMake(4, 4, 4, 4)
-	case .Square2:
+	case .square2:
 		return UIEdgeInsetsMake(8, 8, 8, 8)
-	case .Square3:
+	case .square3:
 		return UIEdgeInsetsMake(16, 16, 16, 16)
-	case .Square4:
+	case .square4:
 		return UIEdgeInsetsMake(24, 24, 24, 24)
-	case .Square5:
+	case .square5:
 		return UIEdgeInsetsMake(32, 32, 32, 32)
-	case .Square6:
+	case .square6:
 		return UIEdgeInsetsMake(40, 40, 40, 40)
-	case .Square7:
+	case .square7:
 		return UIEdgeInsetsMake(48, 48, 48, 48)
-	case .Square8:
+	case .square8:
 		return UIEdgeInsetsMake(56, 56, 56, 56)
-	case .Square9:
+	case .square9:
 		return UIEdgeInsetsMake(64, 64, 64, 64)
 	
 	// rectangle
-	case .WideRectangle1:
+	case .wideRectangle1:
 		return UIEdgeInsetsMake(2, 4, 2, 4)
-	case .WideRectangle2:
+	case .wideRectangle2:
 		return UIEdgeInsetsMake(4, 8, 4, 8)
-	case .WideRectangle3:
+	case .wideRectangle3:
 		return UIEdgeInsetsMake(8, 16, 8, 16)
-	case .WideRectangle4:
+	case .wideRectangle4:
 		return UIEdgeInsetsMake(12, 24, 12, 24)
-	case .WideRectangle5:
+	case .wideRectangle5:
 		return UIEdgeInsetsMake(16, 32, 16, 32)
-	case .WideRectangle6:
+	case .wideRectangle6:
 		return UIEdgeInsetsMake(20, 40, 20, 40)
-	case .WideRectangle7:
+	case .wideRectangle7:
 		return UIEdgeInsetsMake(24, 48, 24, 48)
-	case .WideRectangle8:
+	case .wideRectangle8:
 		return UIEdgeInsetsMake(28, 56, 28, 56)
-	case .WideRectangle9:
+	case .wideRectangle9:
 		return UIEdgeInsetsMake(32, 64, 32, 64)
 		
 	// flipped rectangle
-	case .TallRectangle1:
+	case .tallRectangle1:
 		return UIEdgeInsetsMake(4, 2, 4, 2)
-	case .TallRectangle2:
+	case .tallRectangle2:
 		return UIEdgeInsetsMake(8, 4, 8, 4)
-	case .TallRectangle3:
+	case .tallRectangle3:
 		return UIEdgeInsetsMake(16, 8, 16, 8)
-	case .TallRectangle4:
+	case .tallRectangle4:
 		return UIEdgeInsetsMake(24, 12, 24, 12)
-	case .TallRectangle5:
+	case .tallRectangle5:
 		return UIEdgeInsetsMake(32, 16, 32, 16)
-	case .TallRectangle6:
+	case .tallRectangle6:
 		return UIEdgeInsetsMake(40, 20, 40, 20)
-	case .TallRectangle7:
+	case .tallRectangle7:
 		return UIEdgeInsetsMake(48, 24, 48, 24)
-	case .TallRectangle8:
+	case .tallRectangle8:
 		return UIEdgeInsetsMake(56, 28, 56, 28)
-	case .TallRectangle9:
+	case .tallRectangle9:
 		return UIEdgeInsetsMake(64, 32, 64, 32)
 	}
 }

@@ -36,21 +36,21 @@ public extension UIImage {
 	- Parameter color: The UIColor to create the image from.
 	- Returns: A UIImage that is the color passed in.
 	*/
-	public func tintWithColor(color: UIColor) -> UIImage {
+	public func tintWithColor(_ color: UIColor) -> UIImage {
 		UIGraphicsBeginImageContextWithOptions(size, false, MaterialDevice.scale)
 		let context = UIGraphicsGetCurrentContext()
 
-		CGContextScaleCTM(context, 1.0, -1.0)
-		CGContextTranslateCTM(context, 0.0, -size.height)
+		context?.scaleBy(x: 1.0, y: -1.0)
+		context?.translateBy(x: 0.0, y: -size.height)
 		
-		CGContextSetBlendMode(context, .Multiply)
+		context?.setBlendMode(.multiply)
 		
-		let rect = CGRectMake(0, 0, size.width, size.height)
-		CGContextClipToMask(context, rect, CGImage)
+		let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+		context?.clip(to: rect, mask: cgImage!)
 		color.setFill()
-		CGContextFillRect(context, rect)
+		context?.fill(rect)
 		
-		let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+		let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
 		UIGraphicsEndImageContext()
 		return image
 	}

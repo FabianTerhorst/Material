@@ -42,23 +42,23 @@ public extension UIViewController {
 			if viewController is MenuController {
 				return viewController as? MenuController
 			}
-			viewController = viewController?.parentViewController
+			viewController = viewController?.parent
 		}
 		return nil
 	}
 }
 
 @IBDesignable
-public class MenuController : RootController {
+open class MenuController : RootController {
 	/// Reference to the MenuView.
-	public private(set) lazy var menuView: MenuView = MenuView()
+	open fileprivate(set) lazy var menuView: MenuView = MenuView()
 	
 	/**
 	Opens the menu with a callback.
 	- Parameter completion: An Optional callback that is executed when
 	all menu items have been opened.
 	*/
-	public func openMenu(completion: (() -> Void)? = nil) {
+	open func openMenu(_ completion: (() -> Void)? = nil) {
 		if true == userInteractionEnabled {
 			userInteractionEnabled = false
 			rootViewController.view.alpha = 0.5
@@ -71,7 +71,7 @@ public class MenuController : RootController {
 	- Parameter completion: An Optional callback that is executed when
 	all menu items have been closed.
 	*/
-	public func closeMenu(completion: (() -> Void)? = nil) {
+	open func closeMenu(_ completion: (() -> Void)? = nil) {
 		if false == userInteractionEnabled {
 			rootViewController.view.alpha = 1
 			menuView.close({ [weak self] in
@@ -86,7 +86,7 @@ public class MenuController : RootController {
 	method. LayoutSubviews should be called immediately, unless you
 	have a certain need.
 	*/
-	public override func layoutSubviews() {
+	open override func layoutSubviews() {
 		super.layoutSubviews()
 		rootViewController.view.frame = view.bounds
 	}
@@ -98,13 +98,13 @@ public class MenuController : RootController {
 	The super.prepareView method should always be called immediately
 	when subclassing.
 	*/
-	public override func prepareView() {
+	open override func prepareView() {
 		super.prepareView()
 		prepareMenuView()
 	}
 	
 	/// Prepares the MenuView.
-	private func prepareMenuView() {
+	fileprivate func prepareMenuView() {
 		menuView.zPosition = 1000
 		view.addSubview(menuView)
 	}

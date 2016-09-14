@@ -37,12 +37,12 @@ public extension UIImage {
 	- Parameter size: The size of the image to create.
 	- Returns: A UIImage that is the color passed in.
 	*/
-	public class func imageWithColor(color: UIColor, size: CGSize) -> UIImage {
-		let rect = CGRectMake(0, 0, size.width, size.height)
+	public class func imageWithColor(_ color: UIColor, size: CGSize) -> UIImage {
+		let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
 		UIGraphicsBeginImageContextWithOptions(size, false, 0)
 		color.setFill()
 		UIRectFill(rect)
-		let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+		let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
 		UIGraphicsEndImageContext()
 		return image
 	}

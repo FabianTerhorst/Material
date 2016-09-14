@@ -29,18 +29,29 @@
 */
 
 import UIKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 @objc(TextViewDelegate)
 public protocol TextViewDelegate : UITextViewDelegate {}
 
 @IBDesignable
 @objc(TextView)
-public class TextView: UITextView {
+open class TextView: UITextView, CAAnimationDelegate {
 	/**
 	This property is the same as clipsToBounds. It crops any of the view's
 	contents from bleeding past the view's frame.
 	*/
-	@IBInspectable public var masksToBounds: Bool {
+	@IBInspectable open var masksToBounds: Bool {
 		get {
 			return layer.masksToBounds
 		}
@@ -50,14 +61,14 @@ public class TextView: UITextView {
 	}
 	
 	/// A property that accesses the backing layer's backgroundColor.
-	@IBInspectable public override var backgroundColor: UIColor? {
+	@IBInspectable open override var backgroundColor: UIColor? {
 		didSet {
-			layer.backgroundColor = backgroundColor?.CGColor
+			layer.backgroundColor = backgroundColor?.cgColor
 		}
 	}
 	
 	/// A property that accesses the layer.frame.origin.x property.
-	@IBInspectable public var x: CGFloat {
+	@IBInspectable open var x: CGFloat {
 		get {
 			return layer.frame.origin.x
 		}
@@ -67,7 +78,7 @@ public class TextView: UITextView {
 	}
 	
 	/// A property that accesses the layer.frame.origin.y property.
-	@IBInspectable public var y: CGFloat {
+	@IBInspectable open var y: CGFloat {
 		get {
 			return layer.frame.origin.y
 		}
@@ -77,7 +88,7 @@ public class TextView: UITextView {
 	}
 	
 	/// A property that accesses the layer.frame.size.width property.
-	@IBInspectable public var width: CGFloat {
+	@IBInspectable open var width: CGFloat {
 		get {
 			return layer.frame.size.width
 		}
@@ -87,7 +98,7 @@ public class TextView: UITextView {
 	}
 	
 	/// A property that accesses the layer.frame.size.height property.
-	@IBInspectable public var height: CGFloat {
+	@IBInspectable open var height: CGFloat {
 		get {
 			return layer.frame.size.height
 		}
@@ -97,14 +108,14 @@ public class TextView: UITextView {
 	}
 	
 	/// A property that accesses the backing layer's shadowColor.
-	@IBInspectable public var shadowColor: UIColor? {
+	@IBInspectable open var shadowColor: UIColor? {
 		didSet {
-			layer.shadowColor = shadowColor?.CGColor
+			layer.shadowColor = shadowColor?.cgColor
 		}
 	}
 	
 	/// A property that accesses the backing layer's shadowOffset.
-	@IBInspectable public var shadowOffset: CGSize {
+	@IBInspectable open var shadowOffset: CGSize {
 		get {
 			return layer.shadowOffset
 		}
@@ -114,7 +125,7 @@ public class TextView: UITextView {
 	}
 	
 	/// A property that accesses the backing layer's shadowOpacity.
-	@IBInspectable public var shadowOpacity: Float {
+	@IBInspectable open var shadowOpacity: Float {
 		get {
 			return layer.shadowOpacity
 		}
@@ -124,7 +135,7 @@ public class TextView: UITextView {
 	}
 	
 	/// A property that accesses the backing layer's shadowRadius.
-	@IBInspectable public var shadowRadius: CGFloat {
+	@IBInspectable open var shadowRadius: CGFloat {
 		get {
 			return layer.shadowRadius
 		}
@@ -134,7 +145,7 @@ public class TextView: UITextView {
 	}
 	
 	/// A property that accesses the backing layer's shadowPath.
-	@IBInspectable public var shadowPath: CGPath? {
+	@IBInspectable open var shadowPath: CGPath? {
 		get {
 			return layer.shadowPath
 		}
@@ -144,7 +155,7 @@ public class TextView: UITextView {
 	}
 	
 	/// Enables automatic shadowPath sizing.
-	@IBInspectable public var shadowPathAutoSizeEnabled: Bool = true {
+	@IBInspectable open var shadowPathAutoSizeEnabled: Bool = true {
 		didSet {
 			if shadowPathAutoSizeEnabled {
 				layoutShadowPath()
@@ -157,7 +168,7 @@ public class TextView: UITextView {
 	for the backing layer. This is the preferred method of setting depth
 	in order to maintain consitency across UI objects.
 	*/
-	public var depth: MaterialDepth = .None {
+	open var depth: MaterialDepth = .none {
 		didSet {
 			let value: MaterialDepthType = MaterialDepthToValue(depth)
 			shadowOffset = value.offset
@@ -168,7 +179,7 @@ public class TextView: UITextView {
 	}
 	
 	/// A property that sets the cornerRadius of the backing layer.
-	public var cornerRadiusPreset: MaterialRadius = .None {
+	open var cornerRadiusPreset: MaterialRadius = .none {
 		didSet {
 			if let v: MaterialRadius = cornerRadiusPreset {
 				cornerRadius = MaterialRadiusToValue(v)
@@ -177,7 +188,7 @@ public class TextView: UITextView {
 	}
 	
 	/// A property that accesses the layer.cornerRadius.
-	@IBInspectable public var cornerRadius: CGFloat {
+	@IBInspectable open var cornerRadius: CGFloat {
 		get {
 			return layer.cornerRadius
 		}
@@ -188,14 +199,14 @@ public class TextView: UITextView {
 	}
 	
 	/// A preset property to set the borderWidth.
-	public var borderWidthPreset: MaterialBorder = .None {
+	open var borderWidthPreset: MaterialBorder = .none {
 		didSet {
 			borderWidth = MaterialBorderToValue(borderWidthPreset)
 		}
 	}
 	
 	/// A property that accesses the layer.borderWith.
-	@IBInspectable public var borderWidth: CGFloat {
+	@IBInspectable open var borderWidth: CGFloat {
 		get {
 			return layer.borderWidth
 		}
@@ -205,17 +216,17 @@ public class TextView: UITextView {
 	}
 	
 	/// A property that accesses the layer.borderColor property.
-	@IBInspectable public var borderColor: UIColor? {
+	@IBInspectable open var borderColor: UIColor? {
 		get {
-			return nil == layer.borderColor ? nil : UIColor(CGColor: layer.borderColor!)
+			return nil == layer.borderColor ? nil : UIColor(cgColor: layer.borderColor!)
 		}
 		set(value) {
-			layer.borderColor = value?.CGColor
+			layer.borderColor = value?.cgColor
 		}
 	}
 	
 	/// A property that accesses the layer.position property.
-	@IBInspectable public var position: CGPoint {
+	@IBInspectable open var position: CGPoint {
 		get {
 			return layer.position
 		}
@@ -225,7 +236,7 @@ public class TextView: UITextView {
 	}
 	
 	/// A property that accesses the layer.zPosition property.
-	@IBInspectable public var zPosition: CGFloat {
+	@IBInspectable open var zPosition: CGFloat {
 		get {
 			return layer.zPosition
 		}
@@ -239,44 +250,44 @@ public class TextView: UITextView {
 	titleLabel text value is updated with the placeholderLabel
 	text value before being displayed.
 	*/
-	public var titleLabel: UILabel? {
+	open var titleLabel: UILabel? {
 		didSet {
 			prepareTitleLabel()
 		}
 	}
 	
 	/// The color of the titleLabel text when the textView is not active.
-	@IBInspectable public var titleLabelColor: UIColor? {
+	@IBInspectable open var titleLabelColor: UIColor? {
 		didSet {
 			titleLabel?.textColor = titleLabelColor
 		}
 	}
 	
 	/// The color of the titleLabel text when the textView is active.
-	@IBInspectable public var titleLabelActiveColor: UIColor?
+	@IBInspectable open var titleLabelActiveColor: UIColor?
 	
 	/**
 	A property that sets the distance between the textView and
 	titleLabel.
 	*/
-	@IBInspectable public var titleLabelAnimationDistance: CGFloat = 8
+	@IBInspectable open var titleLabelAnimationDistance: CGFloat = 8
 	
 	/// Placeholder UILabel view.
-	public var placeholderLabel: UILabel? {
+	open var placeholderLabel: UILabel? {
 		didSet {
 			preparePlaceholderLabel()
 		}
 	}
 	
 	/// An override to the text property.
-	@IBInspectable public override var text: String! {
+	@IBInspectable open override var text: String! {
 		didSet {
 			handleTextViewTextDidChange()
 		}
 	}
 	
 	/// An override to the attributedText property.
-	public override var attributedText: NSAttributedString! {
+	open override var attributedText: NSAttributedString! {
 		didSet {
 			handleTextViewTextDidChange()
 		}
@@ -286,14 +297,14 @@ public class TextView: UITextView {
 	Text container UIEdgeInset preset property. This updates the 
 	textContainerInset property with a preset value.
 	*/
-	public var textContainerInsetPreset: MaterialEdgeInset = .None {
+	open var textContainerInsetPreset: MaterialEdgeInset = .none {
 		didSet {
 			textContainerInset = MaterialEdgeInsetToValue(textContainerInsetPreset)
 		}
 	}
 	
 	/// Text container UIEdgeInset property.
-	public override var textContainerInset: UIEdgeInsets {
+	open override var textContainerInset: UIEdgeInsets {
 		didSet {
 			reloadView()
 		}
@@ -336,7 +347,7 @@ public class TextView: UITextView {
 	}
 	
 	/// Overriding the layout callback for subviews.
-	public override func layoutSubviews() {
+	open override func layoutSubviews() {
 		super.layoutSubviews()
 		layoutShadowPath()
 		placeholderLabel?.preferredMaxLayoutWidth = textContainer.size.width - textContainer.lineFragmentPadding * 2
@@ -348,17 +359,17 @@ public class TextView: UITextView {
 	view's backing layer.
 	- Parameter animation: A CAAnimation instance.
 	*/
-	public func animate(animation: CAAnimation) {
+	open func animate(_ animation: CAAnimation) {
 		animation.delegate = self
 		if let a: CABasicAnimation = animation as? CABasicAnimation {
-			a.fromValue = (nil == layer.presentationLayer() ? layer : layer.presentationLayer() as! CALayer).valueForKeyPath(a.keyPath!)
+			a.fromValue = (nil == layer.presentation() ? layer : layer.presentation()!).value(forKeyPath: a.keyPath!)
 		}
 		if let a: CAPropertyAnimation = animation as? CAPropertyAnimation {
-			layer.addAnimation(a, forKey: a.keyPath!)
+			layer.add(a, forKey: a.keyPath!)
 		} else if let a: CAAnimationGroup = animation as? CAAnimationGroup {
-			layer.addAnimation(a, forKey: nil)
+			layer.add(a, forKey: nil)
 		} else if let a: CATransition = animation as? CATransition {
-			layer.addAnimation(a, forKey: kCATransition)
+			layer.add(a, forKey: kCATransition)
 		}
 	}
 	
@@ -367,7 +378,7 @@ public class TextView: UITextView {
 	running an animation.
 	- Parameter anim: The currently running CAAnimation instance.
 	*/
-	public override func animationDidStart(anim: CAAnimation) {
+	open func animationDidStart(_ anim: CAAnimation) {
 		(delegate as? MaterialAnimationDelegate)?.materialAnimationDidStart?(anim)
 	}
 	
@@ -379,13 +390,13 @@ public class TextView: UITextView {
 	because it was completed or interrupted. True if completed, false
 	if interrupted.
 	*/
-	public override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+	open func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
 		if let a: CAPropertyAnimation = anim as? CAPropertyAnimation {
 			if let b: CABasicAnimation = a as? CABasicAnimation {
-				if let v: AnyObject = b.toValue {
+				if let v: AnyObject = b.toValue as AnyObject? {
 					if let k: String = b.keyPath {
 						layer.setValue(v, forKeyPath: k)
-						layer.removeAnimationForKey(k)
+						layer.removeAnimation(forKey: k)
 					}
 				}
 			}
@@ -417,7 +428,7 @@ public class TextView: UITextView {
 	/// Notification handler for when text changed.
 	internal func handleTextViewTextDidChange() {
 		if let p = placeholderLabel {
-			p.hidden = !(true == text?.isEmpty)
+			p.isHidden = !(true == text?.isEmpty)
 		}
 		
 		if 0 < text?.utf16.count {
@@ -440,12 +451,12 @@ public class TextView: UITextView {
 	/// Sets the shadow path.
 	internal func layoutShadowPath() {
 		if shadowPathAutoSizeEnabled {
-			if .None == depth {
+			if .none == depth {
 				shadowPath = nil
 			} else if nil == shadowPath {
-				shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius).CGPath
+				shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius).cgPath
 			} else {
-				animate(MaterialAnimation.shadowPath(UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius).CGPath, duration: 0))
+				animate(MaterialAnimation.shadowPath(UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius).cgPath, duration: 0))
 			}
 		}
 	}
@@ -457,9 +468,9 @@ public class TextView: UITextView {
 	The super.prepareView method should always be called immediately
 	when subclassing.
 	*/
-	public func prepareView() {
+	open func prepareView() {
 		contentScaleFactor = MaterialDevice.scale
-		textContainerInset = MaterialEdgeInsetToValue(.None)
+		textContainerInset = MaterialEdgeInsetToValue(.none)
 		backgroundColor = MaterialColor.white
 		masksToBounds = false
 		removeNotificationHandlers()
@@ -468,7 +479,7 @@ public class TextView: UITextView {
 	}
 	
 	/// prepares the placeholderLabel property.
-	private func preparePlaceholderLabel() {
+	fileprivate func preparePlaceholderLabel() {
 		if let v: UILabel = placeholderLabel {
 			v.font = font
 			v.textAlignment = textAlignment
@@ -481,9 +492,9 @@ public class TextView: UITextView {
 	}
 	
 	/// Prepares the titleLabel property.
-	private func prepareTitleLabel() {
+	fileprivate func prepareTitleLabel() {
 		if let v: UILabel = titleLabel {
-			v.hidden = true
+			v.isHidden = true
 			addSubview(v)
 			if 0 < text?.utf16.count {
 				showTitleLabel()
@@ -494,16 +505,16 @@ public class TextView: UITextView {
 	}
 	
 	/// Shows and animates the titleLabel property.
-	private func showTitleLabel() {
+	fileprivate func showTitleLabel() {
 		if let v: UILabel = titleLabel {
-			if v.hidden {
+			if v.isHidden {
 				if let s: String = placeholderLabel?.text {
                     v.text = s
 				}
 				let h: CGFloat = ceil(v.font.lineHeight)
-				v.frame = CGRectMake(0, -h, bounds.width, h)
-				v.hidden = false
-				UIView.animateWithDuration(0.25, animations: { [weak self] in
+				v.frame = CGRect(x: 0, y: -h, width: bounds.width, height: h)
+				v.isHidden = false
+				UIView.animate(withDuration: 0.25, animations: { [weak self] in
 					if let s: TextView = self {
 						v.alpha = 1
 						v.frame.origin.y = -v.frame.height - s.titleLabelAnimationDistance
@@ -514,30 +525,30 @@ public class TextView: UITextView {
 	}
 	
 	/// Hides and animates the titleLabel property.
-	private func hideTitleLabel() {
+	fileprivate func hideTitleLabel() {
 		if let v: UILabel = titleLabel {
-			if !v.hidden {
-				UIView.animateWithDuration(0.25, animations: {
+			if !v.isHidden {
+				UIView.animate(withDuration: 0.25, animations: {
 					v.alpha = 0
 					v.frame.origin.y = -v.frame.height
-				}) { _ in
-					v.hidden = true
-				}
+				}, completion: { _ in
+					v.isHidden = true
+				}) 
 			}
 		}
 	}
 	
 	/// Prepares the Notification handlers.
-	private func prepareNotificationHandlers() {
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleTextViewTextDidBegin), name: UITextViewTextDidBeginEditingNotification, object: nil)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleTextViewTextDidChange), name: UITextViewTextDidChangeNotification, object: nil)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleTextViewTextDidEnd), name: UITextViewTextDidEndEditingNotification, object: nil)
+	fileprivate func prepareNotificationHandlers() {
+		NotificationCenter.default.addObserver(self, selector: #selector(handleTextViewTextDidBegin), name: NSNotification.Name.UITextViewTextDidBeginEditing, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleTextViewTextDidChange), name: NSNotification.Name.UITextViewTextDidChange, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleTextViewTextDidEnd), name: NSNotification.Name.UITextViewTextDidEndEditing, object: nil)
 	}
 	
 	/// Removes the Notification handlers.
-	private func removeNotificationHandlers() {
-		NSNotificationCenter.defaultCenter().removeObserver(self, name: UITextViewTextDidBeginEditingNotification, object: nil)
-		NSNotificationCenter.defaultCenter().removeObserver(self, name: UITextViewTextDidChangeNotification, object: nil)
-		NSNotificationCenter.defaultCenter().removeObserver(self, name: UITextViewTextDidEndEditingNotification, object: nil)
+	fileprivate func removeNotificationHandlers() {
+		NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidBeginEditing, object: nil)
+		NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidChange, object: nil)
+		NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidEndEditing, object: nil)
 	}
 }

@@ -31,9 +31,9 @@
 import UIKit
 
 internal typealias TextWillProcessEdit = (TextStorage, String, NSRange) -> Void
-internal typealias TextDidProcessEdit = (TextStorage, NSTextCheckingResult?, NSMatchingFlags, UnsafeMutablePointer<ObjCBool>) -> Void
+internal typealias TextDidProcessEdit = (TextStorage, NSTextCheckingResult?, NSRegularExpression.MatchingFlags, UnsafeMutablePointer<ObjCBool>) -> Void
 
-public class TextStorage: NSTextStorage {
+open class TextStorage: NSTextStorage {
 	/// A callback that is executed when a process edit will happen.
 	internal var textWillProcessEdit: TextWillProcessEdit?
 	
@@ -41,10 +41,10 @@ public class TextStorage: NSTextStorage {
 	internal var textDidProcessEdit: TextDidProcessEdit?
 	
 	/// A storage facility for attributed text.
-	public lazy var store: NSMutableAttributedString = NSMutableAttributedString()
+	open lazy var store: NSMutableAttributedString = NSMutableAttributedString()
 	
 	/// The regular expression to match text fragments against.
-	public var expression: NSRegularExpression?
+	open var expression: NSRegularExpression?
 	
 	/// Initializer.
 	public required init?(coder aDecoder: NSCoder) {
@@ -57,17 +57,17 @@ public class TextStorage: NSTextStorage {
 	}
 	
 	/// A String value of the attirbutedString property.
-	public override var string: String {
+	open override var string: String {
 		return store.string
 	}
 	
 	/// Processes the text when editing.
-	public override func processEditing() {
-		let range: NSRange = (string as NSString).paragraphRangeForRange(editedRange)
+	open override func processEditing() {
+		let range: NSRange = (string as NSString).paragraphRange(for: editedRange)
 		
 		textWillProcessEdit?(self, string, range)
 		
-		expression!.enumerateMatchesInString(string, options: [], range: range) { (result: NSTextCheckingResult?, flags: NSMatchingFlags, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
+		expression!.enumerateMatches(in: string, options: [], range: range) { (result: NSTextCheckingResult?, flags: NSRegularExpression.MatchingFlags, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
 			self.textDidProcessEdit?(self, result, flags, stop)
 		}
 		super.processEditing()
@@ -85,8 +85,8 @@ public class TextStorage: NSTextStorage {
 	If you don't need this value, pass NULL.
 	- Returns: The attributes for the character at index.
 	*/
-	public override func attributesAtIndex(location: Int, effectiveRange range: NSRangePointer) -> [String : AnyObject] {
-		return store.attributesAtIndex(location, effectiveRange: range)
+	open override func attributes(at location: Int, effectiveRange range: NSRangePointer?) -> [String : Any] {
+		return store.attributes(at: location, effectiveRange: range)
 	}
 	
 	/**
@@ -95,9 +95,9 @@ public class TextStorage: NSTextStorage {
 	- Parameter str: The string value that the characters
 	will be replaced with.
 	*/
-	public override func replaceCharactersInRange(range: NSRange, withString str: String) {
-		store.replaceCharactersInRange(range, withString: str)
-		edited(NSTextStorageEditActions.EditedCharacters, range: range, changeInLength: str.utf16.count - range.length)
+	open override func replaceCharacters(in range: NSRange, with str: String) {
+		store.replaceCharacters(in: range, with: str)
+		edited(NSTextStorageEditActions.editedCharacters, range: range, changeInLength: str.utf16.count - range.length)
 	}
 	
 	/**
@@ -106,8 +106,8 @@ public class TextStorage: NSTextStorage {
 	- Parameter range: A range of characters that will have their
 	attributes updated.
 	*/
-	public override func setAttributes(attrs: [String : AnyObject]?, range: NSRange) {
+	open override func setAttributes(_ attrs: [String : Any]?, range: NSRange) {
 		store.setAttributes(attrs, range: range)
-		edited(NSTextStorageEditActions.EditedAttributes, range: range, changeInLength: 0)
+		edited(NSTextStorageEditActions.editedAttributes, range: range, changeInLength: 0)
 	}
 }

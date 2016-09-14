@@ -32,8 +32,8 @@ import UIKit
 
 @objc
 public enum NavigationDrawerPosition : NSInteger {
-	case Left
-	case Right
+	case left
+	case right
 }
 
 public extension UIViewController {
@@ -48,7 +48,7 @@ public extension UIViewController {
 			if viewController is NavigationDrawerController {
 				return viewController as? NavigationDrawerController
 			}
-			viewController = viewController?.parentViewController
+			viewController = viewController?.parent
 		}
 		return nil
 	}
@@ -60,89 +60,89 @@ public protocol NavigationDrawerControllerDelegate {
 	An optional delegation method that is fired before the 
 	NavigationDrawerController opens.
 	*/
-	optional func navigationDrawerWillOpen(navigationDrawerController: NavigationDrawerController, position: NavigationDrawerPosition)
+	@objc optional func navigationDrawerWillOpen(_ navigationDrawerController: NavigationDrawerController, position: NavigationDrawerPosition)
 	
 	/**
 	An optional delegation method that is fired after the
 	NavigationDrawerController opened.
 	*/
-	optional func navigationDrawerDidOpen(navigationDrawerController: NavigationDrawerController, position: NavigationDrawerPosition)
+	@objc optional func navigationDrawerDidOpen(_ navigationDrawerController: NavigationDrawerController, position: NavigationDrawerPosition)
 	
 	/**
 	An optional delegation method that is fired before the
 	NavigationDrawerController closes.
 	*/
-	optional func navigationDrawerWillClose(navigationDrawerController: NavigationDrawerController, position: NavigationDrawerPosition)
+	@objc optional func navigationDrawerWillClose(_ navigationDrawerController: NavigationDrawerController, position: NavigationDrawerPosition)
 	
 	/**
 	An optional delegation method that is fired after the
 	NavigationDrawerController closed.
 	*/
-	optional func navigationDrawerDidClose(navigationDrawerController: NavigationDrawerController, position: NavigationDrawerPosition)
+	@objc optional func navigationDrawerDidClose(_ navigationDrawerController: NavigationDrawerController, position: NavigationDrawerPosition)
 	
 	/**
 	An optional delegation method that is fired when the
 	NavigationDrawerController pan gesture begins.
 	*/
-	optional func navigationDrawerPanDidBegin(navigationDrawerController: NavigationDrawerController, point: CGPoint, position: NavigationDrawerPosition)
+	@objc optional func navigationDrawerPanDidBegin(_ navigationDrawerController: NavigationDrawerController, point: CGPoint, position: NavigationDrawerPosition)
 	
 	/**
 	An optional delegation method that is fired when the
 	NavigationDrawerController pan gesture changes position.
 	*/
-	optional func navigationDrawerPanDidChange(navigationDrawerController: NavigationDrawerController, point: CGPoint, position: NavigationDrawerPosition)
+	@objc optional func navigationDrawerPanDidChange(_ navigationDrawerController: NavigationDrawerController, point: CGPoint, position: NavigationDrawerPosition)
 	
 	/**
 	An optional delegation method that is fired when the
 	NavigationDrawerController pan gesture ends.
 	*/
-	optional func navigationDrawerPanDidEnd(navigationDrawerController: NavigationDrawerController, point: CGPoint, position: NavigationDrawerPosition)
+	@objc optional func navigationDrawerPanDidEnd(_ navigationDrawerController: NavigationDrawerController, point: CGPoint, position: NavigationDrawerPosition)
 	
 	/**
 	An optional delegation method that is fired when the
 	NavigationDrawerController tap gesture executes.
 	*/
-	optional func navigationDrawerDidTap(navigationDrawerController: NavigationDrawerController, point: CGPoint, position: NavigationDrawerPosition)
+	@objc optional func navigationDrawerDidTap(_ navigationDrawerController: NavigationDrawerController, point: CGPoint, position: NavigationDrawerPosition)
 
 	/**
 	An optional delegation method that is fired when the
 	status bar is about to change display, hidden or not.
 	*/
-	optional func navigationDrawerStatusBarHiddenState(navigationDrawerController: NavigationDrawerController, hidden: Bool)
+	@objc optional func navigationDrawerStatusBarHiddenState(_ navigationDrawerController: NavigationDrawerController, hidden: Bool)
 }
 
 @IBDesignable
 @objc(NavigationDrawerController)
-public class NavigationDrawerController : RootController, UIGestureRecognizerDelegate {
+open class NavigationDrawerController : RootController, UIGestureRecognizerDelegate {
 	/**
 	A CGFloat property that is used internally to track
 	the original (x) position of the container view when panning.
 	*/
-	private var originalX: CGFloat = 0
+	fileprivate var originalX: CGFloat = 0
 	
 	/**
 	A UIPanGestureRecognizer property internally used for the
 	leftView pan gesture.
 	*/
-	internal private(set) var leftPanGesture: UIPanGestureRecognizer?
+	internal fileprivate(set) var leftPanGesture: UIPanGestureRecognizer?
 	
 	/**
 	A UIPanGestureRecognizer property internally used for the
 	rightView pan gesture.
 	*/
-	internal private(set) var rightPanGesture: UIPanGestureRecognizer?
+	internal fileprivate(set) var rightPanGesture: UIPanGestureRecognizer?
 	
 	/**
 	A UITapGestureRecognizer property internally used for the 
 	leftView tap gesture.
 	*/
-	internal private(set) var leftTapGesture: UITapGestureRecognizer?
+	internal fileprivate(set) var leftTapGesture: UITapGestureRecognizer?
 	
 	/**
 	A UITapGestureRecognizer property internally used for the
 	rightView tap gesture.
 	*/
-	internal private(set) var rightTapGesture: UITapGestureRecognizer?
+	internal fileprivate(set) var rightTapGesture: UITapGestureRecognizer?
 	
 	/**
 	A CGFloat property that accesses the leftView threshold of
@@ -152,8 +152,8 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	leftView is closed. The leftViewThreshold is always at half
 	the width of the leftView.
 	*/
-	@IBInspectable public var leftThreshold: CGFloat = 64
-	private var leftViewThreshold: CGFloat = 0
+	@IBInspectable open var leftThreshold: CGFloat = 64
+	fileprivate var leftViewThreshold: CGFloat = 0
 	
 	/**
 	A CGFloat property that accesses the rightView threshold of
@@ -163,26 +163,26 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	rightView is opened. The rightViewThreshold is always at half
 	the width of the rightView.
 	*/
-	@IBInspectable public var rightThreshold: CGFloat = 64
-	private var rightViewThreshold: CGFloat = 0
+	@IBInspectable open var rightThreshold: CGFloat = 64
+	fileprivate var rightViewThreshold: CGFloat = 0
 	
 	/**
 	A NavigationDrawerControllerDelegate property used to bind
 	the delegation object.
 	*/
-	public weak var delegate: NavigationDrawerControllerDelegate?
+	open weak var delegate: NavigationDrawerControllerDelegate?
 	
 	/**
 	A CGFloat property that sets the animation duration of the
 	leftView when closing and opening. Defaults to 0.25.
 	*/
-	@IBInspectable public var animationDuration: CGFloat = 0.25
+	@IBInspectable open var animationDuration: CGFloat = 0.25
 	
 	/**
 	A Boolean property that enables and disables the leftView from
 	opening and closing. Defaults to true.
 	*/
-	@IBInspectable public var enabled: Bool {
+	@IBInspectable open var enabled: Bool {
 		get {
 			return enabledLeftView || enabledRightView
 		}
@@ -200,7 +200,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	A Boolean property that enables and disables the leftView from
 	opening and closing. Defaults to true.
 	*/
-	@IBInspectable public var enabledLeftView: Bool = false {
+	@IBInspectable open var enabledLeftView: Bool = false {
 		didSet {
 			enabledLeftPanGesture = enabledLeftView
 			enabledLeftTapGesture = enabledLeftView
@@ -208,7 +208,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	}
 	
 	/// Enables the left pan gesture.
-	@IBInspectable public var enabledLeftPanGesture: Bool = false {
+	@IBInspectable open var enabledLeftPanGesture: Bool = false {
 		didSet {
 			if enabledLeftPanGesture {
 				prepareLeftPanGesture()
@@ -219,7 +219,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	}
 	
 	/// Enables the left tap gesture.
-	@IBInspectable public var enabledLeftTapGesture: Bool = false {
+	@IBInspectable open var enabledLeftTapGesture: Bool = false {
 		didSet {
 			if enabledLeftTapGesture {
 				prepareLeftTapGesture()
@@ -233,7 +233,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	A Boolean property that enables and disables the rightView from
 	opening and closing. Defaults to true.
 	*/
-	@IBInspectable public var enabledRightView: Bool = false {
+	@IBInspectable open var enabledRightView: Bool = false {
 		didSet {
 			enabledRightPanGesture = enabledRightView
 			enabledRightTapGesture = enabledRightView
@@ -241,7 +241,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	}
 	
 	/// Enables the right pan gesture.
-	@IBInspectable public var enabledRightPanGesture: Bool = false {
+	@IBInspectable open var enabledRightPanGesture: Bool = false {
 		didSet {
 			if enabledRightPanGesture {
 				prepareRightPanGesture()
@@ -252,7 +252,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	}
 	
 	/// Enables the right tap gesture.
-	@IBInspectable public var enabledRightTapGesture: Bool = false {
+	@IBInspectable open var enabledRightTapGesture: Bool = false {
 		didSet {
 			if enabledRightTapGesture {
 				prepareRightTapGesture()
@@ -266,38 +266,38 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	A Boolean property that triggers the status bar to be hidden
 	when the leftView is opened. Defaults to true.
 	*/
-	@IBInspectable public var enableHideStatusBar: Bool = true
+	@IBInspectable open var enableHideStatusBar: Bool = true
 	
 	/// Sets the statusBar to hidden or not.
-	public private(set) var statusBarHidden: Bool = false
+	open fileprivate(set) var statusBarHidden: Bool = false
 	
 	/**
 	A MaterialDepth property that is used to set the depth of the
 	leftView when opened.
 	*/
-	public var depth: MaterialDepth = .Depth1
+	open var depth: MaterialDepth = .depth1
 	
 	/**
 	A MaterialView property that is used to hide and reveal the
 	leftViewController. It is very rare that this property will
 	need to be accessed externally.
 	*/
-	public private(set) var leftView: MaterialView?
+	open fileprivate(set) var leftView: MaterialView?
 	
 	/**
 	A MaterialView property that is used to hide and reveal the
 	rightViewController. It is very rare that this property will
 	need to be accessed externally.
 	*/
-	public private(set) var rightView: MaterialView?
+	open fileprivate(set) var rightView: MaterialView?
 	
 	/// Indicates whether the leftView or rightView is opened.
-	public var opened: Bool {
+	open var opened: Bool {
 		return openedLeftView || openedRightView
 	}
 	
 	/// indicates if the leftView is opened.
-	public var openedLeftView: Bool {
+	open var openedLeftView: Bool {
 		guard nil != leftView else {
 			return false
 		}
@@ -305,7 +305,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	}
 	
 	/// Indicates if the rightView is opened.
-	public var openedRightView: Bool {
+	open var openedRightView: Bool {
 		guard nil != rightView else {
 			return false
 		}
@@ -319,31 +319,31 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	this, and to add a hidden transition viewController for complex
 	situations, the contentViewController was added.
 	*/
-	public private(set) lazy var contentViewController: UIViewController = UIViewController()
+	open fileprivate(set) lazy var contentViewController: UIViewController = UIViewController()
 	
 	/**
 	A UIViewController property that references the 
 	active left UIViewController.
 	*/
-	public private(set) var leftViewController: UIViewController?
+	open fileprivate(set) var leftViewController: UIViewController?
 	
 	/**
 	A UIViewController property that references the
 	active right UIViewController.
 	*/
-	public private(set) var rightViewController: UIViewController?
+	open fileprivate(set) var rightViewController: UIViewController?
 	
 	/**
 	A CGFloat property to access the width that the leftView
 	opens up to.
 	*/
-	@IBInspectable public private(set) var leftViewWidth: CGFloat!
+	@IBInspectable open fileprivate(set) var leftViewWidth: CGFloat!
 	
 	/**
 	A CGFloat property to access the width that the rightView
 	opens up to.
 	*/
-	@IBInspectable public private(set) var rightViewWidth: CGFloat!
+	@IBInspectable open fileprivate(set) var rightViewWidth: CGFloat!
 	
 	/**
 	An initializer that initializes the object with a NSCoder object.
@@ -358,7 +358,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	- Parameter nibNameOrNil: An Optional String for the nib.
 	- Parameter bundle: An Optional NSBundle where the nib is located.
 	*/
-	public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+	public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 	}
 	
@@ -382,7 +382,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	The super.prepareView method should always be called immediately
 	when subclassing.
 	*/
-	public override func prepareView() {
+	open override func prepareView() {
 		super.prepareView()
 		prepareContentViewController()
 		prepareLeftView()
@@ -390,7 +390,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	}
 	
 	/// Layout subviews.
-	public override func layoutSubviews() {
+	open override func layoutSubviews() {
 		if opened {
 			hideStatusBar()
 		} else {
@@ -404,7 +404,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 			if let vc: UIViewController = leftViewController {
 				vc.view.frame.size.width = v.width
 				vc.view.frame.size.height = v.height
-				vc.view.center = CGPointMake(v.width / 2, v.height / 2)
+				vc.view.center = CGPoint(x: v.width / 2, y: v.height / 2)
 			}
 		}
 		
@@ -415,13 +415,13 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 			if let vc: UIViewController = rightViewController {
 				vc.view.frame.size.width = v.width
 				vc.view.frame.size.height = v.height
-				vc.view.center = CGPointMake(v.width / 2, v.height / 2)
+				vc.view.center = CGPoint(x: v.width / 2, y: v.height / 2)
 			}
 		}
 	}
 	
-	public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-		super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+	open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+		super.viewWillTransition(to: size, with: coordinator)
 		// Ensures the view is hidden.
 		if let v: MaterialView = rightView {
 			v.position.x = size.width + (openedRightView ? -v.width : v.width) / 2
@@ -438,7 +438,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	- Parameter animated: A Boolean value that indicates to animate
 	the leftView width change.
 	*/
-	public func setLeftViewWidth(width: CGFloat, hidden: Bool, animated: Bool, duration: NSTimeInterval = 0.5) {
+	open func setLeftViewWidth(_ width: CGFloat, hidden: Bool, animated: Bool, duration: TimeInterval = 0.5) {
 		if let v: MaterialView = leftView {
 			leftViewWidth = width
 			
@@ -452,35 +452,35 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 				v.shadowPathAutoSizeEnabled = false
 				
 				if hide {
-					UIView.animateWithDuration(duration,
+					UIView.animate(withDuration: duration,
 						animations: { [weak self] in
 							if let s: NavigationDrawerController = self {
 								v.bounds.size.width = width
 								v.position.x = -width / 2
 								s.rootViewController.view.alpha = 1
 							}
-						}) { [weak self] _ in
+						}, completion: { [weak self] _ in
 							if let s: NavigationDrawerController = self {
 								v.shadowPathAutoSizeEnabled = true
 								s.layoutSubviews()
 								s.hideView(v)
 							}
-						}
+						}) 
 				} else {
-					UIView.animateWithDuration(duration,
+					UIView.animate(withDuration: duration,
 						animations: { [weak self] in
 							if let s: NavigationDrawerController = self {
 								v.bounds.size.width = width
 								v.position.x = width / 2
 								s.rootViewController.view.alpha = 0.5
 							}
-						}) { [weak self] _ in
+						}, completion: { [weak self] _ in
 							if let s: NavigationDrawerController = self {
 								v.shadowPathAutoSizeEnabled = true
 								s.layoutSubviews()
 								s.showView(v)
 							}
-						}
+						}) 
 				}
 			} else {
 				v.bounds.size.width = width
@@ -512,7 +512,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	- Parameter animated: A Boolean value that indicates to animate
 	the rightView width change.
 	*/
-	public func setRightViewWidth(width: CGFloat, hidden: Bool, animated: Bool, duration: NSTimeInterval = 0.5) {
+	open func setRightViewWidth(_ width: CGFloat, hidden: Bool, animated: Bool, duration: TimeInterval = 0.5) {
 		if let v: MaterialView = rightView {
 			rightViewWidth = width
 			
@@ -526,35 +526,35 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 				v.shadowPathAutoSizeEnabled = false
 				
 				if hide {
-					UIView.animateWithDuration(duration,
+					UIView.animate(withDuration: duration,
 						animations: { [weak self] in
 							if let s: NavigationDrawerController = self {
 								v.bounds.size.width = width
 								v.position.x = s.view.bounds.width + width / 2
 								s.rootViewController.view.alpha = 1
 							}
-						}) { [weak self] _ in
+						}, completion: { [weak self] _ in
 							if let s: NavigationDrawerController = self {
 								v.shadowPathAutoSizeEnabled = true
 								s.layoutSubviews()
 								s.hideView(v)
 							}
-						}
+						}) 
 				} else {
-					UIView.animateWithDuration(duration,
+					UIView.animate(withDuration: duration,
 						animations: { [weak self] in
 							if let s: NavigationDrawerController = self {
 								v.bounds.size.width = width
 								v.position.x = s.view.bounds.width - width / 2
 								s.rootViewController.view.alpha = 0.5
 							}
-						}) { [weak self] _ in
+						}, completion: { [weak self] _ in
 							if let s: NavigationDrawerController = self {
 								v.shadowPathAutoSizeEnabled = true
 								s.layoutSubviews()
 								s.showView(v)
 							}
-						}
+						}) 
 				}
 			} else {
 				v.bounds.size.width = width
@@ -582,7 +582,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	velocity of the user interaction when animating the
 	leftView. Defaults to 0.
 	*/
-	public func toggleLeftView(velocity: CGFloat = 0) {
+	open func toggleLeftView(_ velocity: CGFloat = 0) {
 		openedLeftView ? closeLeftView(velocity) : openLeftView(velocity)
 	}
 	
@@ -593,7 +593,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	velocity of the user interaction when animating the
 	leftView. Defaults to 0.
 	*/
-	public func toggleRightView(velocity: CGFloat = 0) {
+	open func toggleRightView(_ velocity: CGFloat = 0) {
 		openedRightView ? closeRightView(velocity) : openRightView(velocity)
 	}
 	
@@ -603,22 +603,22 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	velocity of the user interaction when animating the
 	leftView. Defaults to 0.
 	*/
-	public func openLeftView(velocity: CGFloat = 0) {
+	open func openLeftView(_ velocity: CGFloat = 0) {
 		if enabledLeftView {
 			if let v: MaterialView = leftView {
 				hideStatusBar()
 				showView(v)
 				userInteractionEnabled = false
-				delegate?.navigationDrawerWillOpen?(self, position: .Left)
-				UIView.animateWithDuration(Double(0 == velocity ? animationDuration : fmax(0.1, fmin(1, Double(v.x / velocity)))),
+				delegate?.navigationDrawerWillOpen?(self, position: .left)
+				UIView.animate(withDuration: Double(0 == velocity ? animationDuration : fmax(0.1, fmin(1, CGFloat(v.x / velocity)))),
 					animations: {
 						v.position.x = v.width / 2
 						self.rootViewController.view.alpha = 0.5
-					}) { [weak self] _ in
+					}, completion: { [weak self] _ in
 						if let s: NavigationDrawerController = self {
-							s.delegate?.navigationDrawerDidOpen?(s, position: .Left)
+							s.delegate?.navigationDrawerDidOpen?(s, position: .left)
 						}
-					}
+					}) 
 			}
 		}
 	}
@@ -629,24 +629,24 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	velocity of the user interaction when animating the
 	leftView. Defaults to 0.
 	*/
-	public func openRightView(velocity: CGFloat = 0) {
+	open func openRightView(_ velocity: CGFloat = 0) {
 		if enabledRightView {
 			if let v: MaterialView = rightView {
 				hideStatusBar()
 				showView(v)
 				userInteractionEnabled = false
-				delegate?.navigationDrawerWillOpen?(self, position: .Right)
-				UIView.animateWithDuration(Double(0 == velocity ? animationDuration : fmax(0.1, fmin(1, Double(v.x / velocity)))),
+				delegate?.navigationDrawerWillOpen?(self, position: .right)
+				UIView.animate(withDuration: Double(0 == velocity ? animationDuration : fmax(0.1, fmin(1, CGFloat(v.x / velocity)))),
 					animations: { [weak self] in
 						if let s: NavigationDrawerController = self {
 							v.position.x = s.view.bounds.width - v.width / 2
 							s.rootViewController.view.alpha = 0.5
 						}
-					}) { [weak self] _ in
+					}, completion: { [weak self] _ in
 						if let s: NavigationDrawerController = self {
-							s.delegate?.navigationDrawerDidOpen?(s, position: .Right)
+							s.delegate?.navigationDrawerDidOpen?(s, position: .right)
 						}
-					}
+					}) 
 			}
 		}
 	}
@@ -657,24 +657,24 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	velocity of the user interaction when animating the
 	leftView. Defaults to 0.
 	*/
-	public func closeLeftView(velocity: CGFloat = 0) {
+	open func closeLeftView(_ velocity: CGFloat = 0) {
 		if enabledLeftView {
 			if let v: MaterialView = leftView {
 				userInteractionEnabled = true
-				delegate?.navigationDrawerWillClose?(self, position: .Left)
-				UIView.animateWithDuration(Double(0 == velocity ? animationDuration : fmax(0.1, fmin(1, Double(v.x / velocity)))),
+				delegate?.navigationDrawerWillClose?(self, position: .left)
+				UIView.animate(withDuration: Double(0 == velocity ? animationDuration : fmax(0.1, fmin(1, CGFloat(v.x / velocity)))),
 					animations: { [weak self] in
 						if let s: NavigationDrawerController = self {
 							v.position.x = -v.width / 2
 							s.rootViewController.view.alpha = 1
 						}
-					}) { [weak self] _ in
+					}, completion: { [weak self] _ in
 						if let s: NavigationDrawerController = self {
 							s.hideView(v)
 							s.toggleStatusBar()
-							s.delegate?.navigationDrawerDidClose?(s, position: .Left)
+							s.delegate?.navigationDrawerDidClose?(s, position: .left)
 						}
-					}
+					}) 
 			}
 		}
 	}
@@ -685,24 +685,24 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	velocity of the user interaction when animating the
 	leftView. Defaults to 0.
 	*/
-	public func closeRightView(velocity: CGFloat = 0) {
+	open func closeRightView(_ velocity: CGFloat = 0) {
 		if enabledRightView {
 			if let v: MaterialView = rightView {
 				userInteractionEnabled = true
-				delegate?.navigationDrawerWillClose?(self, position: .Right)
-				UIView.animateWithDuration(Double(0 == velocity ? animationDuration : fmax(0.1, fmin(1, Double(v.x / velocity)))),
+				delegate?.navigationDrawerWillClose?(self, position: .right)
+				UIView.animate(withDuration: Double(0 == velocity ? animationDuration : fmax(0.1, fmin(1, CGFloat(v.x / velocity)))),
 					animations: { [weak self] in
 						if let s: NavigationDrawerController = self {
 							v.position.x = s.view.bounds.width + v.width / 2
 							s.rootViewController.view.alpha = 1
 						}
-					}) { [weak self] _ in
+					}, completion: { [weak self] _ in
 						if let s: NavigationDrawerController = self {
 							s.hideView(v)
 							s.toggleStatusBar()
-							s.delegate?.navigationDrawerDidClose?(s, position: .Right)
+							s.delegate?.navigationDrawerDidClose?(s, position: .right)
 						}
-					}
+					}) 
 			}
 		}
 	}
@@ -713,11 +713,11 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	- Parameter touch: The UITouch event.
 	- Returns: A Boolean of whether to continue the gesture or not.
 	*/
-	public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-		if !openedRightView && gestureRecognizer == leftPanGesture && (openedLeftView || isPointContainedWithinLeftThreshold(touch.locationInView(view))) {
+	open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+		if !openedRightView && gestureRecognizer == leftPanGesture && (openedLeftView || isPointContainedWithinLeftThreshold(touch.location(in: view))) {
 			return true
 		}
-		if !openedLeftView && gestureRecognizer == rightPanGesture && (openedRightView || isPointContainedWithinRighThreshold(touch.locationInView(view))) {
+		if !openedLeftView && gestureRecognizer == rightPanGesture && (openedRightView || isPointContainedWithinRighThreshold(touch.location(in: view))) {
 			return true
 		}
 		if openedLeftView && gestureRecognizer == leftTapGesture {
@@ -735,20 +735,20 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	- Parameter recognizer: A UIPanGestureRecognizer that is
 	passed to the handler when recognized.
 	*/
-	internal func handleLeftViewPanGesture(recognizer: UIPanGestureRecognizer) {
-		if enabledLeftView && (openedLeftView || !openedRightView && isPointContainedWithinLeftThreshold(recognizer.locationInView(view))) {
+	internal func handleLeftViewPanGesture(_ recognizer: UIPanGestureRecognizer) {
+		if enabledLeftView && (openedLeftView || !openedRightView && isPointContainedWithinLeftThreshold(recognizer.location(in: view))) {
 			if let v: MaterialView = leftView {
-				let point: CGPoint = recognizer.locationInView(view)
+				let point: CGPoint = recognizer.location(in: view)
 				
 				// Animate the panel.
 				switch recognizer.state {
-				case .Began:
+				case .began:
 					originalX = v.position.x
 					showView(v)
-					delegate?.navigationDrawerPanDidBegin?(self, point: point, position: .Left)
-				case .Changed:
+					delegate?.navigationDrawerPanDidBegin?(self, point: point, position: .left)
+				case .changed:
 					let w: CGFloat = v.width
-					let translationX: CGFloat = recognizer.translationInView(v).x
+					let translationX: CGFloat = recognizer.translation(in: v).x
 					
 					v.position.x = originalX + translationX > (w / 2) ? (w / 2) : originalX + translationX
 					
@@ -759,19 +759,19 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 						hideStatusBar()
 					}
 					
-					delegate?.navigationDrawerPanDidChange?(self, point: point, position: .Left)
-				case .Ended, .Cancelled, .Failed:
-					let p: CGPoint = recognizer.velocityInView(recognizer.view)
+					delegate?.navigationDrawerPanDidChange?(self, point: point, position: .left)
+				case .ended, .cancelled, .failed:
+					let p: CGPoint = recognizer.velocity(in: recognizer.view)
 					let x: CGFloat = p.x >= 1000 || p.x <= -1000 ? p.x : 0
 					
-					delegate?.navigationDrawerPanDidEnd?(self, point: point, position: .Left)
+					delegate?.navigationDrawerPanDidEnd?(self, point: point, position: .left)
 					
 					if v.x <= -leftViewWidth + leftViewThreshold || x < -1000 {
 						closeLeftView(x)
 					} else {
 						openLeftView(x)
 					}
-				case .Possible:break
+				case .possible:break
 				}
 			}
 		}
@@ -783,20 +783,20 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	- Parameter recognizer: A UIPanGestureRecognizer that is
 	passed to the handler when recognized.
 	*/
-	internal func handleRightViewPanGesture(recognizer: UIPanGestureRecognizer) {
-		if enabledRightView && (openedRightView || !openedLeftView && isPointContainedWithinRighThreshold(recognizer.locationInView(view))) {
+	internal func handleRightViewPanGesture(_ recognizer: UIPanGestureRecognizer) {
+		if enabledRightView && (openedRightView || !openedLeftView && isPointContainedWithinRighThreshold(recognizer.location(in: view))) {
 			if let v: MaterialView = rightView {
-				let point: CGPoint = recognizer.locationInView(view)
+				let point: CGPoint = recognizer.location(in: view)
 				
 				// Animate the panel.
 				switch recognizer.state {
-				case .Began:
+				case .began:
 					originalX = v.position.x
 					showView(v)
-					delegate?.navigationDrawerPanDidBegin?(self, point: point, position: .Right)
-				case .Changed:
+					delegate?.navigationDrawerPanDidBegin?(self, point: point, position: .right)
+				case .changed:
 					let w: CGFloat = v.width
-					let translationX: CGFloat = recognizer.translationInView(v).x
+					let translationX: CGFloat = recognizer.translation(in: v).x
 					
 					v.position.x = originalX + translationX < view.bounds.width - (w / 2) ? view.bounds.width - (w / 2) : originalX + translationX
 					
@@ -807,19 +807,19 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 						hideStatusBar()
 					}
 					
-					delegate?.navigationDrawerPanDidChange?(self, point: point, position: .Right)
-				case .Ended, .Cancelled, .Failed:
-					let p: CGPoint = recognizer.velocityInView(recognizer.view)
+					delegate?.navigationDrawerPanDidChange?(self, point: point, position: .right)
+				case .ended, .cancelled, .failed:
+					let p: CGPoint = recognizer.velocity(in: recognizer.view)
 					let x: CGFloat = p.x >= 1000 || p.x <= -1000 ? p.x : 0
 					
-					delegate?.navigationDrawerPanDidEnd?(self, point: point, position: .Right)
+					delegate?.navigationDrawerPanDidEnd?(self, point: point, position: .right)
 					
 					if v.x >= rightViewThreshold || x > 1000 {
 						closeRightView(x)
 					} else {
 						openRightView(x)
 					}
-				case .Possible:break
+				case .possible:break
 				}
 			}
 		}
@@ -831,11 +831,11 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	- Parameter recognizer: A UITapGestureRecognizer that is
 	passed to the handler when recognized.
 	*/
-	internal func handleLeftViewTapGesture(recognizer: UITapGestureRecognizer) {
+	internal func handleLeftViewTapGesture(_ recognizer: UITapGestureRecognizer) {
 		if openedLeftView {
 			if let v: MaterialView = leftView {
-				delegate?.navigationDrawerDidTap?(self, point: recognizer.locationInView(view), position: .Left)
-				if enabledLeftView && openedLeftView && !isPointContainedWithinView(v, point: recognizer.locationInView(v)) {
+				delegate?.navigationDrawerDidTap?(self, point: recognizer.location(in: view), position: .left)
+				if enabledLeftView && openedLeftView && !isPointContainedWithinView(v, point: recognizer.location(in: v)) {
 					closeLeftView()
 				}
 			}
@@ -848,11 +848,11 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	- Parameter recognizer: A UITapGestureRecognizer that is
 	passed to the handler when recognized.
 	*/
-	internal func handleRightViewTapGesture(recognizer: UITapGestureRecognizer) {
+	internal func handleRightViewTapGesture(_ recognizer: UITapGestureRecognizer) {
 		if openedRightView {
 			if let v: MaterialView = rightView {
-				delegate?.navigationDrawerDidTap?(self, point: recognizer.locationInView(view), position: .Right)
-				if enabledRightView && openedRightView && !isPointContainedWithinView(v, point: recognizer.locationInView(v)) {
+				delegate?.navigationDrawerDidTap?(self, point: recognizer.location(in: view), position: .right)
+				if enabledRightView && openedRightView && !isPointContainedWithinView(v, point: recognizer.location(in: v)) {
 					closeRightView()
 				}
 			}
@@ -860,28 +860,28 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	}
 	
 	/// Prepares the contentViewController.
-	private func prepareContentViewController() {
+	fileprivate func prepareContentViewController() {
 		contentViewController.view.backgroundColor = MaterialColor.black
 		prepareViewControllerWithinContainer(contentViewController, container: view)
-		view.sendSubviewToBack(contentViewController.view)
+		view.sendSubview(toBack: contentViewController.view)
 	}
 	
 	/// A method that prepares the leftViewController.
-	private func prepareLeftViewController() {
+	fileprivate func prepareLeftViewController() {
 		if let v: MaterialView = leftView {
 			prepareViewControllerWithinContainer(leftViewController, container: v)
 		}
 	}
 	
 	/// A method that prepares the rightViewController.
-	private func prepareRightViewController() {
+	fileprivate func prepareRightViewController() {
 		if let v: MaterialView = rightView {
 			prepareViewControllerWithinContainer(rightViewController, container: v)
 		}
 	}
 	
 	/// A method that prepares the leftView.
-	private func prepareLeftView() {
+	fileprivate func prepareLeftView() {
 		guard let _: UIViewController = leftViewController else {
 			return
 		}
@@ -890,18 +890,18 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 		
 		leftViewWidth = .iPhone == MaterialDevice.type ? 280 : 320
 		leftView = MaterialView()
-		leftView!.frame = CGRectMake(0, 0, leftViewWidth, view.frame.height)
+		leftView!.frame = CGRect(x: 0, y: 0, width: leftViewWidth, height: view.frame.height)
 		leftView!.backgroundColor = MaterialColor.clear
 		view.addSubview(leftView!)
 		
-		leftView!.hidden = true
+		leftView!.isHidden = true
 		leftView!.position.x = -leftViewWidth / 2
 		leftView!.zPosition = 2000
 		prepareLeftViewController()
 	}
 	
 	/// A method that prepares the leftView.
-	private func prepareRightView() {
+	fileprivate func prepareRightView() {
 		guard let _: UIViewController = rightViewController else {
 			return
 		}
@@ -910,18 +910,18 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 		
 		rightViewWidth = .iPhone == MaterialDevice.type ? 280 : 320
 		rightView = MaterialView()
-		rightView!.frame = CGRectMake(0, 0, rightViewWidth, view.frame.height)
+		rightView!.frame = CGRect(x: 0, y: 0, width: rightViewWidth, height: view.frame.height)
 		rightView!.backgroundColor = MaterialColor.clear
 		view.addSubview(rightView!)
 		
-		rightView!.hidden = true
+		rightView!.isHidden = true
 		rightView!.position.x = view.bounds.width + rightViewWidth / 2
 		rightView!.zPosition = 2000
 		prepareRightViewController()
 	}
 	
 	/// Prepare the left pan gesture.
-	private func prepareLeftPanGesture() {
+	fileprivate func prepareLeftPanGesture() {
 		if nil == leftPanGesture {
 			leftPanGesture = UIPanGestureRecognizer(target: self, action: #selector(handleLeftViewPanGesture(_:)))
 			leftPanGesture!.delegate = self
@@ -930,7 +930,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	}
 	
 	/// Prepare the left tap gesture.
-	private func prepareLeftTapGesture() {
+	fileprivate func prepareLeftTapGesture() {
 		if nil == leftTapGesture {
 			leftTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleLeftViewTapGesture(_:)))
 			leftTapGesture!.delegate = self
@@ -940,7 +940,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	}
 	
 	/// Prepares the right pan gesture.
-	private func prepareRightPanGesture() {
+	fileprivate func prepareRightPanGesture() {
 		if nil == rightPanGesture {
 			rightPanGesture = UIPanGestureRecognizer(target: self, action: #selector(handleRightViewPanGesture(_:)))
 			rightPanGesture!.delegate = self
@@ -949,7 +949,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	}
 	
 	/// Prepares the right tap gesture.
-	private func prepareRightTapGesture() {
+	fileprivate func prepareRightTapGesture() {
 		if nil == rightTapGesture {
 			rightTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleRightViewTapGesture(_:)))
 			rightTapGesture!.delegate = self
@@ -959,13 +959,13 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	}
 	
 	/// A method that removes the passed in pan and leftView tap gesture recognizers.
-	private func removeLeftViewGestures() {
+	fileprivate func removeLeftViewGestures() {
 		removeLeftPanGesture()
 		removeLeftTapGesture()
 	}
 	
 	/// Removes the left pan gesture.
-	private func removeLeftPanGesture() {
+	fileprivate func removeLeftPanGesture() {
 		if let v: UIPanGestureRecognizer = leftPanGesture {
 			view.removeGestureRecognizer(v)
 			leftPanGesture = nil
@@ -973,7 +973,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	}
 	
 	/// Removes the left tap gesture.
-	private func removeLeftTapGesture() {
+	fileprivate func removeLeftTapGesture() {
 		if let v: UITapGestureRecognizer = leftTapGesture {
 			view.removeGestureRecognizer(v)
 			leftTapGesture = nil
@@ -981,14 +981,14 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	}
 	
 	/// A method that removes the passed in pan and rightView tap gesture recognizers.
-	private func removeRightViewGestures() {
+	fileprivate func removeRightViewGestures() {
 		removeRightPanGesture()
 		removeRightTapGesture()
 		
 	}
 	
 	/// Removes the right pan gesture.
-	private func removeRightPanGesture() {
+	fileprivate func removeRightPanGesture() {
 		if let v: UIPanGestureRecognizer = rightPanGesture {
 			view.removeGestureRecognizer(v)
 			rightPanGesture = nil
@@ -996,7 +996,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	}
 	
 	/// Removes the right tap gesture.
-	private func removeRightTapGesture() {
+	fileprivate func removeRightTapGesture() {
 		if let v: UITapGestureRecognizer = rightTapGesture {
 			view.removeGestureRecognizer(v)
 			rightTapGesture = nil
@@ -1004,12 +1004,12 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	}
 	
 	/// Shows the statusBar.
-	private func showStatusBar() {
+	fileprivate func showStatusBar() {
 		if statusBarHidden {
 			statusBarHidden = false
-			dispatch_async(dispatch_get_main_queue(), { [weak self] in
+			DispatchQueue.main.async(execute: { [weak self] in
 				if let s: NavigationDrawerController = self {
-					if let v: UIWindow = UIApplication.sharedApplication().keyWindow {
+					if let v: UIWindow = UIApplication.shared.keyWindow {
 						v.windowLevel = UIWindowLevelNormal
 						s.delegate?.navigationDrawerStatusBarHiddenState?(s, hidden: false)
 					}
@@ -1019,13 +1019,13 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	}
 	
 	/// Hides the statusBar.
-	private func hideStatusBar() {
+	fileprivate func hideStatusBar() {
 		if enableHideStatusBar {
 			if !statusBarHidden {
 				statusBarHidden = true
-				dispatch_async(dispatch_get_main_queue(), { [weak self] in
+				DispatchQueue.main.async(execute: { [weak self] in
 					if let s: NavigationDrawerController = self {
-						if let v: UIWindow = UIApplication.sharedApplication().keyWindow {
+						if let v: UIWindow = UIApplication.shared.keyWindow {
 							v.windowLevel = UIWindowLevelStatusBar + 1
 							s.delegate?.navigationDrawerStatusBarHiddenState?(s, hidden: true)
 						}
@@ -1036,7 +1036,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	}
 	
 	/// Toggles the statusBar
-	private func toggleStatusBar() {
+	fileprivate func toggleStatusBar() {
 		if opened || MaterialDevice.isLandscape && .iPhone == MaterialDevice.type {
 			hideStatusBar()
 		} else {
@@ -1053,7 +1053,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	- Returns: A Boolean of the result, true if yes, false 
 	otherwise.
 	*/
-	private func isPointContainedWithinLeftThreshold(point: CGPoint) -> Bool {
+	fileprivate func isPointContainedWithinLeftThreshold(_ point: CGPoint) -> Bool {
 		return point.x <= leftThreshold
 	}
 	
@@ -1066,7 +1066,7 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	- Returns: A Boolean of the result, true if yes, false
 	otherwise.
 	*/
-	private func isPointContainedWithinRighThreshold(point: CGPoint) -> Bool {
+	fileprivate func isPointContainedWithinRighThreshold(_ point: CGPoint) -> Bool {
 		return point.x >= view.bounds.width - rightThreshold
 	}
 	
@@ -1080,25 +1080,25 @@ public class NavigationDrawerController : RootController, UIGestureRecognizerDel
 	- Returns: A Boolean of the result, true if yes, false
 	otherwise.
 	*/
-	private func isPointContainedWithinView(container: UIView, point: CGPoint) -> Bool {
-		return CGRectContainsPoint(container.bounds, point)
+	fileprivate func isPointContainedWithinView(_ container: UIView, point: CGPoint) -> Bool {
+		return container.bounds.contains(point)
 	}
 	
 	/**
 	A method that shows a view.
 	- Parameter container: A container view.
 	*/
-	private func showView(container: MaterialView) {
+	fileprivate func showView(_ container: MaterialView) {
 		container.depth = depth
-		container.hidden = false
+		container.isHidden = false
 	}
 	
 	/**
 	A method that hides a view.
 	- Parameter container: A container view.
 	*/
-	private func hideView(container: MaterialView) {
-		container.depth = .None
-		container.hidden = true
+	fileprivate func hideView(_ container: MaterialView) {
+		container.depth = .none
+		container.isHidden = true
 	}
 }

@@ -34,7 +34,7 @@ public extension UIImage {
 	/**
 		:name:	internalResize
 	*/
-	private func internalResize(toWidth tw: CGFloat = 0, toHeight th: CGFloat = 0) -> UIImage? {
+	fileprivate func internalResize(toWidth tw: CGFloat = 0, toHeight th: CGFloat = 0) -> UIImage? {
 		var w: CGFloat?
 		var h: CGFloat?
 		
@@ -45,9 +45,9 @@ public extension UIImage {
 		}
 		
 		let g: UIImage?
-		let t: CGRect = CGRectMake(0, 0, w ?? tw, h ?? th)
+		let t: CGRect = CGRect(x: 0, y: 0, width: w ?? tw, height: h ?? th)
 		UIGraphicsBeginImageContextWithOptions(t.size, false, MaterialDevice.scale)
-		drawInRect(t, blendMode: .Normal, alpha: 1)
+		draw(in: t, blendMode: .normal, alpha: 1)
 		g = UIGraphicsGetImageFromCurrentImageContext()
 		UIGraphicsEndImageContext()
 		

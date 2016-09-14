@@ -34,31 +34,31 @@ public typealias MaterialAnimationTransitionType = String
 public typealias MaterialAnimationTransitionSubTypeType = String
 
 public enum MaterialAnimationTransition {
-	case Fade
-	case MoveIn
-	case Push
-	case Reveal
+	case fade
+	case moveIn
+	case push
+	case reveal
 }
 
 public enum MaterialAnimationTransitionSubType {
-	case Right
-	case Left
-	case Top
-	case Bottom
+	case right
+	case left
+	case top
+	case bottom
 }
 
 /**
 	:name:	MaterialAnimationTransitionToValue
 */
-public func MaterialAnimationTransitionToValue(transition: MaterialAnimationTransition) -> MaterialAnimationTransitionType {
+public func MaterialAnimationTransitionToValue(_ transition: MaterialAnimationTransition) -> MaterialAnimationTransitionType {
 	switch transition {
-	case .Fade:
+	case .fade:
 		return kCATransitionFade
-	case .MoveIn:
+	case .moveIn:
 		return kCATransitionMoveIn
-	case .Push:
+	case .push:
 		return kCATransitionPush
-	case .Reveal:
+	case .reveal:
 		return kCATransitionReveal
 	}
 }
@@ -66,15 +66,15 @@ public func MaterialAnimationTransitionToValue(transition: MaterialAnimationTran
 /**
 	:name:	MaterialAnimationTransitionSubTypeToValue
 */
-public func MaterialAnimationTransitionSubTypeToValue(direction: MaterialAnimationTransitionSubType) -> MaterialAnimationTransitionSubTypeType {
+public func MaterialAnimationTransitionSubTypeToValue(_ direction: MaterialAnimationTransitionSubType) -> MaterialAnimationTransitionSubTypeType {
 	switch direction {
-	case .Right:
+	case .right:
 		return kCATransitionFromRight
-	case .Left:
+	case .left:
 		return kCATransitionFromLeft
-	case .Top:
+	case .top:
 		return kCATransitionFromBottom
-	case .Bottom:
+	case .bottom:
 		return kCATransitionFromTop
 	}
 }
@@ -83,7 +83,7 @@ public extension MaterialAnimation {
 	/**
 	:name: transition
 	*/
-	public static func transition(type: MaterialAnimationTransition, direction: MaterialAnimationTransitionSubType? = nil, duration: CFTimeInterval? = nil) -> CATransition {
+	public static func transition(_ type: MaterialAnimationTransition, direction: MaterialAnimationTransitionSubType? = nil, duration: CFTimeInterval? = nil) -> CATransition {
 		let animation: CATransition = CATransition()
 		animation.type = MaterialAnimationTransitionToValue(type)
 		if let d = direction {

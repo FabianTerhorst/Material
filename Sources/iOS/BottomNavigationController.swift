@@ -30,38 +30,38 @@
 
 import UIKit
 
-public class BottomNavigationFadeAnimatedTransitioning : NSObject, UIViewControllerAnimatedTransitioning {
-	public func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-		let fromView : UIView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-		let toView : UIView = transitionContext.viewForKey(UITransitionContextToViewKey)!
+open class BottomNavigationFadeAnimatedTransitioning : NSObject, UIViewControllerAnimatedTransitioning {
+	open func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+		let fromView : UIView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
+		let toView : UIView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
 		toView.alpha = 0
 		
-		transitionContext.containerView()!.addSubview(fromView)
-		transitionContext.containerView()!.addSubview(toView)
+		transitionContext.containerView.addSubview(fromView)
+		transitionContext.containerView.addSubview(toView)
 		
-		UIView.animateWithDuration(transitionDuration(transitionContext),
+		UIView.animate(withDuration: transitionDuration(using: transitionContext),
 			animations: { _ in
 				toView.alpha = 1
 				fromView.alpha = 0
-			}) { _ in
+			}, completion: { _ in
 				transitionContext.completeTransition(true)
-			}
+			}) 
 	}
 	
-	public func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+	open func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
 		return 0.35
 	}
 }
 
 public enum BottomNavigationTransitionAnimation {
-	case None
-	case Fade
+	case none
+	case fade
 }
 
 @IBDesignable
-public class BottomNavigationController : UITabBarController, UITabBarControllerDelegate {
+open class BottomNavigationController : UITabBarController, UITabBarControllerDelegate {
 	/// The transition animation to use when selecting a new tab.
-	public var transitionAnimation: BottomNavigationTransitionAnimation = .Fade
+	open var transitionAnimation: BottomNavigationTransitionAnimation = .fade
 	
 	/**
 	An initializer that initializes the object with a NSCoder object.
@@ -76,7 +76,7 @@ public class BottomNavigationController : UITabBarController, UITabBarController
 	- Parameter nibNameOrNil: An Optional String for the nib.
 	- Parameter bundle: An Optional NSBundle where the nib is located.
 	*/
-	public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+	public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 	}
 	
@@ -84,17 +84,17 @@ public class BottomNavigationController : UITabBarController, UITabBarController
 		super.init(nibName: nil, bundle: nil)
 	}
 	
-	public override func viewDidLoad() {
+	open override func viewDidLoad() {
 		super.viewDidLoad()
 		prepareView()
 	}
 	
-	public override func viewWillLayoutSubviews() {
+	open override func viewWillLayoutSubviews() {
 		super.viewWillLayoutSubviews()
 		layoutSubviews()
 	}
 	
-	public func layoutSubviews() {
+	open func layoutSubviews() {
 		if let v: Array<UITabBarItem> = tabBar.items {
 			for item in v {
 				if .iPhone == MaterialDevice.type {
@@ -126,7 +126,7 @@ public class BottomNavigationController : UITabBarController, UITabBarController
 	The super.prepareView method should always be called immediately
 	when subclassing.
 	*/
-	public func prepareView() {
+	open func prepareView() {
 		view.clipsToBounds = true
 		view.contentScaleFactor = MaterialDevice.scale
 		delegate = self
@@ -134,19 +134,19 @@ public class BottomNavigationController : UITabBarController, UITabBarController
 	}
 	
 	/// Handles transitions when tabBarItems are pressed.
-	public func tabBarController(tabBarController: UITabBarController, animationControllerForTransitionFromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+	open func tabBarController(_ tabBarController: UITabBarController, animationControllerForTransitionFrom fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
 		let fVC: UIViewController? = fromVC
 		let tVC: UIViewController? = toVC
 		if nil == fVC || nil == tVC {
 			return nil
 		}
-		return .Fade == transitionAnimation ? BottomNavigationFadeAnimatedTransitioning() : nil
+		return .fade == transitionAnimation ? BottomNavigationFadeAnimatedTransitioning() : nil
 	}
 	
 	/// Prepares the tabBar.
-	private func prepareTabBar() {
-		tabBar.depth = .Depth1
-		let image: UIImage? = UIImage.imageWithColor(MaterialColor.clear, size: CGSizeMake(1, 1))
+	fileprivate func prepareTabBar() {
+		tabBar.depth = .depth1
+		let image: UIImage? = UIImage.imageWithColor(MaterialColor.clear, size: CGSize(width: 1, height: 1))
 		tabBar.shadowImage = image
 		tabBar.backgroundImage = image
 		tabBar.backgroundColor = MaterialColor.white

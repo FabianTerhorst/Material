@@ -32,28 +32,28 @@ import UIKit
 
 public struct MaterialColor {
 	// clear
-	public static let clear: UIColor = UIColor.clearColor()
+	public static let clear: UIColor = UIColor.clear
 	
 	// white
-	public static let white: UIColor = UIColor.whiteColor()
+	public static let white: UIColor = UIColor.white
 	
 	// black
-	public static let black: UIColor = UIColor.blackColor()
+	public static let black: UIColor = UIColor.black
 	
 	// dark text
 	public struct darkText {
-		public static let primary: UIColor = MaterialColor.black.colorWithAlphaComponent(0.87)
-		public static let secondary: UIColor = MaterialColor.black.colorWithAlphaComponent(0.54)
-		public static let others: UIColor = MaterialColor.black.colorWithAlphaComponent(0.38)
-		public static let dividers: UIColor = MaterialColor.black.colorWithAlphaComponent(0.12)
+		public static let primary: UIColor = MaterialColor.black.withAlphaComponent(0.87)
+		public static let secondary: UIColor = MaterialColor.black.withAlphaComponent(0.54)
+		public static let others: UIColor = MaterialColor.black.withAlphaComponent(0.38)
+		public static let dividers: UIColor = MaterialColor.black.withAlphaComponent(0.12)
 	}
 	
 	// light text
 	public struct lightText {
 		public static let primary: UIColor = MaterialColor.white
-		public static let secondary: UIColor = MaterialColor.white.colorWithAlphaComponent(0.7)
-		public static let others: UIColor = MaterialColor.white.colorWithAlphaComponent(0.5)
-		public static let dividers: UIColor = MaterialColor.white.colorWithAlphaComponent(0.12)
+		public static let secondary: UIColor = MaterialColor.white.withAlphaComponent(0.7)
+		public static let others: UIColor = MaterialColor.white.withAlphaComponent(0.5)
+		public static let dividers: UIColor = MaterialColor.white.withAlphaComponent(0.12)
 	}
 	
 	// red

@@ -30,7 +30,7 @@
 
 import UIKit
 
-public class FlatButton : MaterialButton {
+open class FlatButton : MaterialButton {
 	/**
 	Prepares the view instance when intialized. When subclassing,
 	it is recommended to override the prepareView method
@@ -38,9 +38,9 @@ public class FlatButton : MaterialButton {
 	The super.prepareView method should always be called immediately
 	when subclassing.
 	*/
-	public override func prepareView() {
+	open override func prepareView() {
 		super.prepareView()
-		cornerRadiusPreset = .Radius1
-		contentEdgeInsetsPreset = .WideRectangle3
+		cornerRadiusPreset = .radius1
+		contentEdgeInsetsPreset = .wideRectangle3
 	}
 }

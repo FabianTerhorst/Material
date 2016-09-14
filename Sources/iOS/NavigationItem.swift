@@ -33,7 +33,7 @@ import UIKit
 /// A memory reference to the NavigationItem instance.
 private var MaterialAssociatedObjectNavigationItemKey: UInt8 = 0
 
-public class MaterialAssociatedObjectNavigationItem {
+open class MaterialAssociatedObjectNavigationItem {
 	/**
 	A boolean indicating whether keys are being observed
 	on the UINavigationItem.
@@ -41,22 +41,22 @@ public class MaterialAssociatedObjectNavigationItem {
 	internal var observed: Bool = false
 	
 	/// Back Button.
-	public var backButton: IconButton?
+	open var backButton: IconButton?
 	
 	/// Content View.
-	public var contentView: UIView?
+	open var contentView: UIView?
 	
 	/// Title label.
-	public private(set) var titleLabel: UILabel!
+	open fileprivate(set) var titleLabel: UILabel!
 	
 	/// Detail label.
-	public private(set) var detailLabel: UILabel!
+	open fileprivate(set) var detailLabel: UILabel!
 	
 	/// Left controls.
-	public var leftControls: Array<UIControl>?
+	open var leftControls: Array<UIControl>?
 	
 	/// Right controls.
-	public var rightControls: Array<UIControl>?
+	open var rightControls: Array<UIControl>?
 	
 	/// Initializer.
 	public init() {
@@ -65,17 +65,17 @@ public class MaterialAssociatedObjectNavigationItem {
 	}
 	
 	/// Prepares the titleLabel.
-	private func prepareTitleLabel() {
+	fileprivate func prepareTitleLabel() {
 		titleLabel = UILabel()
 		titleLabel.font = RobotoFont.mediumWithSize(17)
-		titleLabel.textAlignment = .Center
+		titleLabel.textAlignment = .center
 	}
 	
 	/// Prepares the detailLabel.
-	private func prepareDetailLabel() {
+	fileprivate func prepareDetailLabel() {
 		detailLabel = UILabel()
 		detailLabel.font = RobotoFont.regularWithSize(12)
-		detailLabel.textAlignment = .Center
+		detailLabel.textAlignment = .center
 	}
 }
 

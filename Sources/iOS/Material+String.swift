@@ -35,7 +35,7 @@ public extension String {
 	:name:	lines
 	*/
 	public var lines: Array<String> {
-		return componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet())
+		return components(separatedBy: CharacterSet.newlines)
 	}
 	
 	/**
@@ -55,21 +55,21 @@ public extension String {
 	/**
 	:name:	replaceNewLineCharater
 	*/
-	public func replaceNewLineCharater(replace: String = " ") -> String {
-		return componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).joinWithSeparator(replace).trim()
+	public func replaceNewLineCharater(_ replace: String = " ") -> String {
+		return components(separatedBy: CharacterSet.whitespacesAndNewlines).joined(separator: replace).trim()
 	}
 	
 	/**
 	:name:	replacePunctuationCharacters
 	*/
-	public func replacePunctuationCharacters(replace: String = "") -> String {
-		return componentsSeparatedByCharactersInSet(NSCharacterSet.punctuationCharacterSet()).joinWithSeparator(replace).trim()
+	public func replacePunctuationCharacters(_ replace: String = "") -> String {
+		return components(separatedBy: CharacterSet.punctuationCharacters).joined(separator: replace).trim()
 	}
 	
 	/**
 	:name:	trim
 	*/
 	public func trim() -> String {
-		return stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+		return trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
 	}
 }

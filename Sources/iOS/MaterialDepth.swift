@@ -33,28 +33,28 @@ import UIKit
 public typealias MaterialDepthType = (offset: CGSize, opacity: Float, radius: CGFloat)
 
 public enum MaterialDepth {
-	case None
-	case Depth1
-	case Depth2
-	case Depth3
-	case Depth4
-	case Depth5
+	case none
+	case depth1
+	case depth2
+	case depth3
+	case depth4
+	case depth5
 }
 
 /// Converts the MaterialDepth enum to a MaterialDepthType value.
-public func MaterialDepthToValue(depth: MaterialDepth) -> MaterialDepthType {
+public func MaterialDepthToValue(_ depth: MaterialDepth) -> MaterialDepthType {
 	switch depth {
-	case .None:
+	case .none:
 		return (offset: CGSize.zero, opacity: 0, radius: 0)
-	case .Depth1:
-		return (offset: CGSizeMake(0, 1), opacity: 0.3, radius: 1)
-	case .Depth2:
-		return (offset: CGSizeMake(0, 2), opacity: 0.3, radius: 2)
-	case .Depth3:
-		return (offset: CGSizeMake(0, 3), opacity: 0.3, radius: 3)
-	case .Depth4:
-		return (offset: CGSizeMake(0, 4), opacity: 0.3, radius: 4)
-	case .Depth5:
-		return (offset: CGSizeMake(0, 5), opacity: 0.3, radius: 5)
+	case .depth1:
+		return (offset: CGSize(width: 0, height: 1), opacity: 0.3, radius: 1)
+	case .depth2:
+		return (offset: CGSize(width: 0, height: 2), opacity: 0.3, radius: 2)
+	case .depth3:
+		return (offset: CGSize(width: 0, height: 3), opacity: 0.3, radius: 3)
+	case .depth4:
+		return (offset: CGSize(width: 0, height: 4), opacity: 0.3, radius: 4)
+	case .depth5:
+		return (offset: CGSize(width: 0, height: 5), opacity: 0.3, radius: 5)
 	}
 }

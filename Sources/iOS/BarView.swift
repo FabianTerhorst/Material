@@ -30,7 +30,7 @@
 
 import UIKit
 
-public class BarView : ControlView {
+open class BarView : ControlView {
 	/**
 	An initializer that initializes the object with a NSCoder object.
 	- Parameter aDecoder: A NSCoder instance.
@@ -65,8 +65,8 @@ public class BarView : ControlView {
 	The super.prepareView method should always be called immediately
 	when subclassing.
 	*/
-	public override func prepareView() {
+	open override func prepareView() {
 		super.prepareView()
-		depth = .Depth1
+		depth = .depth1
 	}
 }

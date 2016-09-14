@@ -29,7 +29,7 @@
 */
 
 public enum MaterialShape {
-	case None
-	case Square
-	case Circle
+	case none
+	case square
+	case circle
 }

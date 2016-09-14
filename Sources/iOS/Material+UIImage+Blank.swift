@@ -36,8 +36,8 @@ public extension UIImage {
 	- Returns: A UIImage that is clear.
 	*/
 	public class func clearImage() -> UIImage {
-		UIGraphicsBeginImageContextWithOptions(CGSizeMake(36, 36), false, 0)
-		let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+		UIGraphicsBeginImageContextWithOptions(CGSize(width: 36, height: 36), false, 0)
+		let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
 		UIGraphicsEndImageContext()
 		return image
 	}

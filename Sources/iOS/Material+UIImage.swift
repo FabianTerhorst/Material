@@ -31,6 +31,6 @@
 import UIKit
 
 public enum ImageFormatType {
-	case PNG
-	case JPEG
+	case png
+	case jpeg
 }

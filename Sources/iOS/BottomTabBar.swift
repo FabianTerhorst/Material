@@ -32,15 +32,15 @@ import UIKit
 
 public extension UITabBarItem {
 	/// Sets the color of the title color for a state.
-	public func setTitleColor(color: UIColor, forState state: UIControlState) {
-		setTitleTextAttributes([NSForegroundColorAttributeName: color], forState: state)
+	public func setTitleColor(_ color: UIColor, forState state: UIControlState) {
+		setTitleTextAttributes([NSForegroundColorAttributeName: color], for: state)
 	}
 }
 
 @IBDesignable
-public class BottomTabBar : UITabBar {
+open class BottomTabBar : UITabBar {
 	/// Automatically aligns the BottomNavigationBar to the superview.
-	public var autoLayoutToSuperview: Bool = true
+	open var autoLayoutToSuperview: Bool = true
 	
 	/**
 	This property is the same as clipsToBounds. It crops any of the view's
@@ -48,7 +48,7 @@ public class BottomTabBar : UITabBar {
 	the image property, then this value does not need to be set, since the
 	visualLayer's maskToBounds is set to true by default.
 	*/
-	@IBInspectable public var masksToBounds: Bool {
+	@IBInspectable open var masksToBounds: Bool {
 		get {
 			return layer.masksToBounds
 		}
@@ -58,14 +58,14 @@ public class BottomTabBar : UITabBar {
 	}
 	
 	/// A property that accesses the backing layer's backgroundColor.
-	@IBInspectable public override var backgroundColor: UIColor? {
+	@IBInspectable open override var backgroundColor: UIColor? {
 		didSet {
 			barTintColor = backgroundColor
 		}
 	}
 	
 	/// A property that accesses the layer.frame.origin.x property.
-	@IBInspectable public var x: CGFloat {
+	@IBInspectable open var x: CGFloat {
 		get {
 			return layer.frame.origin.x
 		}
@@ -75,7 +75,7 @@ public class BottomTabBar : UITabBar {
 	}
 	
 	/// A property that accesses the layer.frame.origin.y property.
-	@IBInspectable public var y: CGFloat {
+	@IBInspectable open var y: CGFloat {
 		get {
 			return layer.frame.origin.y
 		}
@@ -90,7 +90,7 @@ public class BottomTabBar : UITabBar {
 	value that is not .None, the height will be adjusted to maintain the correct
 	shape.
 	*/
-	@IBInspectable public var width: CGFloat {
+	@IBInspectable open var width: CGFloat {
 		get {
 			return layer.frame.size.width
 		}
@@ -105,7 +105,7 @@ public class BottomTabBar : UITabBar {
 	value that is not .None, the width will be adjusted to maintain the correct
 	shape.
 	*/
-	@IBInspectable public var height: CGFloat {
+	@IBInspectable open var height: CGFloat {
 		get {
 			return layer.frame.size.height
 		}
@@ -115,14 +115,14 @@ public class BottomTabBar : UITabBar {
 	}
 	
 	/// A property that accesses the backing layer's shadowColor.
-	@IBInspectable public var shadowColor: UIColor? {
+	@IBInspectable open var shadowColor: UIColor? {
 		didSet {
-			layer.shadowColor = shadowColor?.CGColor
+			layer.shadowColor = shadowColor?.cgColor
 		}
 	}
 	
 	/// A property that accesses the backing layer's shadowOffset.
-	@IBInspectable public var shadowOffset: CGSize {
+	@IBInspectable open var shadowOffset: CGSize {
 		get {
 			return layer.shadowOffset
 		}
@@ -132,7 +132,7 @@ public class BottomTabBar : UITabBar {
 	}
 	
 	/// A property that accesses the backing layer's shadowOpacity.
-	@IBInspectable public var shadowOpacity: Float {
+	@IBInspectable open var shadowOpacity: Float {
 		get {
 			return layer.shadowOpacity
 		}
@@ -142,7 +142,7 @@ public class BottomTabBar : UITabBar {
 	}
 	
 	/// A property that accesses the backing layer's shadowRadius.
-	@IBInspectable public var shadowRadius: CGFloat {
+	@IBInspectable open var shadowRadius: CGFloat {
 		get {
 			return layer.shadowRadius
 		}
@@ -152,14 +152,14 @@ public class BottomTabBar : UITabBar {
 	}
 	
 	/// A preset property to set the borderWidth.
-	public var borderWidthPreset: MaterialBorder = .None {
+	open var borderWidthPreset: MaterialBorder = .none {
 		didSet {
 			borderWidth = MaterialBorderToValue(borderWidthPreset)
 		}
 	}
 	
 	/// A property that accesses the layer.borderWith.
-	@IBInspectable public var borderWidth: CGFloat {
+	@IBInspectable open var borderWidth: CGFloat {
 		get {
 			return layer.borderWidth
 		}
@@ -169,12 +169,12 @@ public class BottomTabBar : UITabBar {
 	}
 	
 	/// A property that accesses the layer.borderColor property.
-	@IBInspectable public var borderColor: UIColor? {
+	@IBInspectable open var borderColor: UIColor? {
 		get {
-			return nil == layer.borderColor ? nil : UIColor(CGColor: layer.borderColor!)
+			return nil == layer.borderColor ? nil : UIColor(cgColor: layer.borderColor!)
 		}
 		set(value) {
-			layer.borderColor = value?.CGColor
+			layer.borderColor = value?.cgColor
 		}
 	}
 	
@@ -203,7 +203,7 @@ public class BottomTabBar : UITabBar {
 		self.init(frame: CGRect.zero)
 	}
 	
-	public override func layoutSubviews() {
+	open override func layoutSubviews() {
 		super.layoutSubviews()
 		if let v: Array<UITabBarItem> = items {
 			for item in v {
@@ -229,7 +229,7 @@ public class BottomTabBar : UITabBar {
 		}
 	}
 	
-	public override func didMoveToSuperview() {
+	open override func didMoveToSuperview() {
 		super.didMoveToSuperview()
 		if autoLayoutToSuperview {
 			if let v: UIView = superview {
@@ -246,11 +246,11 @@ public class BottomTabBar : UITabBar {
 	The super.prepareView method should always be called immediately
 	when subclassing.
 	*/
-	public func prepareView() {
-		depth = .Depth1
+	open func prepareView() {
+		depth = .depth1
 		contentScaleFactor = MaterialDevice.scale
 		backgroundColor = MaterialColor.white
-		let image: UIImage? = UIImage.imageWithColor(MaterialColor.clear, size: CGSizeMake(1, 1))
+		let image: UIImage? = UIImage.imageWithColor(MaterialColor.clear, size: CGSize(width: 1, height: 1))
 		shadowImage = image
 		backgroundImage = image
 	}
@@ -259,13 +259,13 @@ public class BottomTabBar : UITabBar {
 /// A memory reference to the TabBarItem instance.
 private var MaterialAssociatedObjectTabBarKey: UInt8 = 0
 
-public class MaterialAssociatedObjectTabBar {
+open class MaterialAssociatedObjectTabBar {
 	/**
 	A property that sets the shadowOffset, shadowOpacity, and shadowRadius
 	for the backing layer. This is the preferred method of setting depth
 	in order to maintain consitency across UI objects.
 	*/
-	public var depth: MaterialDepth
+	open var depth: MaterialDepth
 	
 	public init(depth: MaterialDepth) {
 		self.depth = depth
@@ -277,7 +277,7 @@ public extension UITabBar {
 	public internal(set) var item: MaterialAssociatedObjectTabBar {
 		get {
 			return MaterialAssociatedObject(self, key: &MaterialAssociatedObjectTabBarKey) {
-				return MaterialAssociatedObjectTabBar(depth: .None)
+				return MaterialAssociatedObjectTabBar(depth: .none)
 			}
 		}
 		set(value) {
